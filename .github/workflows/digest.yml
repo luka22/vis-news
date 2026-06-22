@@ -1,0 +1,54 @@
+name: Weekly Vis News Digest
+
+on:
+  schedule:
+    # Monday 07:00 UTC (09:00 CEST / 08:00 CET)
+    - cron: "0 7 * * 1"
+  workflow_dispatch: # allow manual runs from Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore seen.db cache
+        uses: actions/cache@v4
+        with:
+          path: data/seen.db
+          key: seen-db-${{ github.run_id }}
+          restore-keys: seen-db-
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run aggregator
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python main.py
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
