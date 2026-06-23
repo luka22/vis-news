@@ -8,6 +8,19 @@ TEMPLATES_DIR = Path(__file__).parent.parent / "templates"
 DOCS_DIR = Path(__file__).parent.parent / "docs"
 SITE_URL = "https://issa.news"
 
+LOCAL_SOURCES = {
+    "gradvis.hr",
+    "vis-tourism.com",
+    "islandvis.blogspot.com",
+    "tz-komiza.hr",
+    "dalmacijadanas.hr",
+}
+REGIONAL_SOURCES = {
+    "slobodnadalmacija.hr",
+    "nacional.hr",
+    "index.hr",
+}
+
 
 def _write_sitemap(generated_at: datetime) -> None:
     sitemap = f"""<?xml version="1.0" encoding="UTF-8"?>
@@ -49,9 +62,12 @@ def render(articles: list[Article], generated_at: datetime | None = None) -> Pat
     env.filters["reldate_en"] = lambda dt: _relative_date(dt, "en")
     tmpl = env.get_template("web.html.j2")
     sidebar = fetch_sidebar()
+    local     = [a for a in articles if a.source in LOCAL_SOURCES]
+    regional  = [a for a in articles if a.source in REGIONAL_SOURCES]
     html = tmpl.render(
-        articles=articles,
-        article_count=len(articles),
+        articles=local,
+        featured=regional,
+        article_count=len(local),
         generated_at=now,
         sidebar=sidebar,
         site_url=SITE_URL,
