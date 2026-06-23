@@ -16,6 +16,7 @@
     form-action 'none';
   " />
   <title>Viške novosti / Vis Island News — issa.news</title>
+  <link rel="icon" href="https://www.gradvis.hr/wp-content/uploads/2019/06/grb_vis.png" />
   <meta name="description" content="Tjedni pregled vijesti s otoka Visa. Weekly news digest from Vis island, Croatia — local news, events, sea conditions." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="{{ site_url }}/" />
@@ -27,17 +28,24 @@
   <meta property="og:title"       content="Viške novosti / Vis Island News" />
   <meta property="og:description" content="Tjedni pregled vijesti s otoka Visa. Weekly news digest from Vis island, Croatia." />
   <meta property="og:image"       content="https://www.gradvis.hr/wp-content/uploads/2019/06/grb_vis.png" />
-
-  <!-- Language -->
   <meta name="language" content="hr, en" />
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: Georgia, 'Times New Roman', serif;
+      font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif;
       background: #fdf8f0;
       color: #2c2c2c;
-      line-height: 1.7;
+      line-height: 1.75;
+    }
+
+    /* ── Croatian flag accent stripe ── */
+    .flag-stripe {
+      height: 4px;
+      background: linear-gradient(to right,
+        #D4002A 33.33%, #ffffff 33.33%,
+        #ffffff 66.66%, #003DA5 66.66%);
     }
 
     /* ── language toggle ── */
@@ -106,21 +114,23 @@
     /* ── articles ── */
     .article {
       border-bottom: 1px solid #d9cebc;
-      padding: 1.4rem 0;
+      padding: 1.4rem 0.5rem;
+      border-radius: 4px;
+      transition: background 0.12s;
     }
+    .article:hover { background: #f5f0e8; }
     .article:last-child { border-bottom: none; }
 
     .article-meta {
       font-size: 0.78rem;
       color: #7a6f5c;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.45rem;
       display: flex;
-      gap: 0.75rem;
+      gap: 0.6rem;
       flex-wrap: wrap;
       align-items: center;
     }
     .source-badge {
-      background: #1a4a6b;
       color: #fff;
       border-radius: 3px;
       padding: 0.1rem 0.45rem;
@@ -128,10 +138,20 @@
       font-family: sans-serif;
       letter-spacing: 0.03em;
     }
-    .article h2 { font-size: 1.1rem; margin-bottom: 0.45rem; }
+    .article h2 { font-size: 1.1rem; margin-bottom: 0.45rem; line-height: 1.4; }
     .article h2 a { color: #1a4a6b; text-decoration: none; }
     .article h2 a:hover { text-decoration: underline; }
     .summary { font-size: 0.93rem; color: #3d3730; font-style: italic; }
+
+    /* ── source badge colours ── */
+    .badge-gradvis       { background: #1a4a6b; }
+    .badge-vis-tourism   { background: #1a6b5a; }
+    .badge-islandvis     { background: #b56a00; }
+    .badge-nacional      { background: #8b1a1a; }
+    .badge-slobodna      { background: #c0392b; }
+    .badge-tz-komiza     { background: #2d6a2d; }
+    .badge-index         { background: #5b2d8b; }
+    .badge-dalmacijadanas{ background: #b54e00; }
 
     /* ── sidebar ── */
     .sidebar { position: sticky; top: 1rem; }
@@ -196,9 +216,22 @@
       .sidebar { position: static; }
       header h1 { font-size: 1.4rem; }
     }
+
+    /* ── print ── */
+    @media print {
+      .flag-stripe, .lang-bar, .sidebar, footer { display: none; }
+      .page { grid-template-columns: 1fr; }
+      .article { break-inside: avoid; }
+      .article h2 a { color: #000; }
+      .article h2 a::after { content: " (" attr(href) ")"; font-size: 0.75rem; color: #666; }
+      header { background: #fff; color: #000; }
+      header img.grb { filter: none; }
+    }
   </style>
 </head>
 <body>
+
+<div class="flag-stripe"></div>
 
 <!-- language bar -->
 <div class="lang-bar">
@@ -217,8 +250,8 @@
         <span class="en">Vis Island News</span>
       </h1>
       <p>
-        <span class="hr">Tjedni pregled vijesti s otoka Visa &mdash; {{ generated_at.strftime('%d. %m. %Y.') }}</span>
-        <span class="en">Weekly digest from the island of Vis &mdash; {{ generated_at.strftime('%d %B %Y') }}</span>
+        <span class="hr">{{ article_count }} vijesti &mdash; {{ generated_at.strftime('%d. %m. %Y.') }}</span>
+        <span class="en">{{ article_count }} stories &mdash; {{ generated_at.strftime('%d %B %Y') }}</span>
       </p>
     </div>
     <img class="grb"
@@ -226,6 +259,17 @@
          alt="Grb Grada Visa" />
   </div>
 </header>
+
+{% set badge_class = {
+  'gradvis.hr':          'badge-gradvis',
+  'vis-tourism.com':     'badge-vis-tourism',
+  'islandvis.blogspot.com': 'badge-islandvis',
+  'nacional.hr':         'badge-nacional',
+  'slobodnadalmacija.hr':'badge-slobodna',
+  'tz-komiza.hr':        'badge-tz-komiza',
+  'index.hr':            'badge-index',
+  'dalmacijadanas.hr':   'badge-dalmacijadanas',
+} %}
 
 <div class="page">
 
@@ -241,9 +285,10 @@
     {% for article in articles %}
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">{{ article.source }}</span>
+        <span class="source-badge {{ badge_class.get(article.source, 'badge-gradvis') }}">{{ article.source }}</span>
         {% if article.published %}
-        <span>{{ article.published.strftime('%d.%m.%Y.') }}</span>
+        <span class="hr">{{ article.published | reldate_hr }}</span>
+        <span class="en">{{ article.published | reldate_en }}</span>
         {% endif %}
       </div>
       <h2><a href="{{ article.url }}" target="_blank" rel="noopener">
@@ -379,8 +424,8 @@
 </div>
 
 <footer>
-  <span class="hr">Generirano automatski &bull; Izvori: gradvis.hr, vis-tourism.com, tz-komiza.hr, islandvis.blogspot.com, slobodnadalmacija.hr, nacional.hr, index.hr</span>
-  <span class="en">Auto-generated &bull; Sources: gradvis.hr, vis-tourism.com, tz-komiza.hr, islandvis.blogspot.com, slobodnadalmacija.hr, nacional.hr, index.hr</span>
+  <span class="hr">Generirano automatski &bull; Izvori: gradvis.hr, vis-tourism.com, tz-komiza.hr, islandvis.blogspot.com, slobodnadalmacija.hr, nacional.hr, index.hr, dalmacijadanas.hr</span>
+  <span class="en">Auto-generated &bull; Sources: gradvis.hr, vis-tourism.com, tz-komiza.hr, islandvis.blogspot.com, slobodnadalmacija.hr, nacional.hr, index.hr, dalmacijadanas.hr</span>
 </footer>
 
 <script>
@@ -391,7 +436,6 @@
       btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
     });
   }
-  // restore saved preference on load
   const saved = localStorage.getItem('vis-lang') || 'hr';
   document.documentElement.setAttribute('data-lang', saved);
   document.querySelectorAll('.lang-btn').forEach(btn => {

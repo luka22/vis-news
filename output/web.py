@@ -22,14 +22,36 @@ def _write_sitemap(generated_at: datetime) -> None:
     (DOCS_DIR / "sitemap.xml").write_text(sitemap, encoding="utf-8")
 
 
+def _relative_date(dt, lang: str = "hr") -> str:
+    if not dt:
+        return ""
+    now = datetime.now(UTC)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=UTC)
+    days = (now - dt).days
+    if lang == "hr":
+        if days == 0: return "danas"
+        if days == 1: return "jučer"
+        if days < 7:  return f"prije {days} dana"
+        return dt.strftime("%-d. %-m. %Y.")
+    else:
+        if days == 0: return "today"
+        if days == 1: return "yesterday"
+        if days < 7:  return f"{days} days ago"
+        return dt.strftime("%-d %b %Y")
+
+
 def render(articles: list[Article], generated_at: datetime | None = None) -> Path:
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     now = generated_at or datetime.now(UTC)
     env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)), autoescape=True)
+    env.filters["reldate_hr"] = lambda dt: _relative_date(dt, "hr")
+    env.filters["reldate_en"] = lambda dt: _relative_date(dt, "en")
     tmpl = env.get_template("web.html.j2")
     sidebar = fetch_sidebar()
     html = tmpl.render(
         articles=articles,
+        article_count=len(articles),
         generated_at=now,
         sidebar=sidebar,
         site_url=SITE_URL,

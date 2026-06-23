@@ -16,6 +16,7 @@
     form-action 'none';
   " />
   <title>Viške novosti / Vis Island News — issa.news</title>
+  <link rel="icon" href="https://www.gradvis.hr/wp-content/uploads/2019/06/grb_vis.png" />
   <meta name="description" content="Tjedni pregled vijesti s otoka Visa. Weekly news digest from Vis island, Croatia — local news, events, sea conditions." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://issa.news/" />
@@ -27,17 +28,24 @@
   <meta property="og:title"       content="Viške novosti / Vis Island News" />
   <meta property="og:description" content="Tjedni pregled vijesti s otoka Visa. Weekly news digest from Vis island, Croatia." />
   <meta property="og:image"       content="https://www.gradvis.hr/wp-content/uploads/2019/06/grb_vis.png" />
-
-  <!-- Language -->
   <meta name="language" content="hr, en" />
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: Georgia, 'Times New Roman', serif;
+      font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif;
       background: #fdf8f0;
       color: #2c2c2c;
-      line-height: 1.7;
+      line-height: 1.75;
+    }
+
+    /* ── Croatian flag accent stripe ── */
+    .flag-stripe {
+      height: 4px;
+      background: linear-gradient(to right,
+        #D4002A 33.33%, #ffffff 33.33%,
+        #ffffff 66.66%, #003DA5 66.66%);
     }
 
     /* ── language toggle ── */
@@ -106,21 +114,23 @@
     /* ── articles ── */
     .article {
       border-bottom: 1px solid #d9cebc;
-      padding: 1.4rem 0;
+      padding: 1.4rem 0.5rem;
+      border-radius: 4px;
+      transition: background 0.12s;
     }
+    .article:hover { background: #f5f0e8; }
     .article:last-child { border-bottom: none; }
 
     .article-meta {
       font-size: 0.78rem;
       color: #7a6f5c;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.45rem;
       display: flex;
-      gap: 0.75rem;
+      gap: 0.6rem;
       flex-wrap: wrap;
       align-items: center;
     }
     .source-badge {
-      background: #1a4a6b;
       color: #fff;
       border-radius: 3px;
       padding: 0.1rem 0.45rem;
@@ -128,10 +138,20 @@
       font-family: sans-serif;
       letter-spacing: 0.03em;
     }
-    .article h2 { font-size: 1.1rem; margin-bottom: 0.45rem; }
+    .article h2 { font-size: 1.1rem; margin-bottom: 0.45rem; line-height: 1.4; }
     .article h2 a { color: #1a4a6b; text-decoration: none; }
     .article h2 a:hover { text-decoration: underline; }
     .summary { font-size: 0.93rem; color: #3d3730; font-style: italic; }
+
+    /* ── source badge colours ── */
+    .badge-gradvis       { background: #1a4a6b; }
+    .badge-vis-tourism   { background: #1a6b5a; }
+    .badge-islandvis     { background: #b56a00; }
+    .badge-nacional      { background: #8b1a1a; }
+    .badge-slobodna      { background: #c0392b; }
+    .badge-tz-komiza     { background: #2d6a2d; }
+    .badge-index         { background: #5b2d8b; }
+    .badge-dalmacijadanas{ background: #b54e00; }
 
     /* ── sidebar ── */
     .sidebar { position: sticky; top: 1rem; }
@@ -196,9 +216,22 @@
       .sidebar { position: static; }
       header h1 { font-size: 1.4rem; }
     }
+
+    /* ── print ── */
+    @media print {
+      .flag-stripe, .lang-bar, .sidebar, footer { display: none; }
+      .page { grid-template-columns: 1fr; }
+      .article { break-inside: avoid; }
+      .article h2 a { color: #000; }
+      .article h2 a::after { content: " (" attr(href) ")"; font-size: 0.75rem; color: #666; }
+      header { background: #fff; color: #000; }
+      header img.grb { filter: none; }
+    }
   </style>
 </head>
 <body>
+
+<div class="flag-stripe"></div>
 
 <!-- language bar -->
 <div class="lang-bar">
@@ -217,8 +250,8 @@
         <span class="en">Vis Island News</span>
       </h1>
       <p>
-        <span class="hr">Tjedni pregled vijesti s otoka Visa &mdash; 23. 06. 2026.</span>
-        <span class="en">Weekly digest from the island of Vis &mdash; 23 June 2026</span>
+        <span class="hr">127 vijesti &mdash; 23. 06. 2026.</span>
+        <span class="en">127 stories &mdash; 23 June 2026</span>
       </p>
     </div>
     <img class="grb"
@@ -226,6 +259,8 @@
          alt="Grb Grada Visa" />
   </div>
 </header>
+
+
 
 <div class="page">
 
@@ -236,9 +271,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>20.06.2026.</span>
+        <span class="hr">prije 3 dana</span>
+        <span class="en">3 days ago</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/06/koncert-rane-glazbe.html" target="_blank" rel="noopener">
@@ -253,9 +289,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>19.06.2026.</span>
+        <span class="hr">prije 4 dana</span>
+        <span class="en">4 days ago</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/poziv-na-12-sjednicu-gradskog-vijeca-grada-visa-tematsku/" target="_blank" rel="noopener">
@@ -270,9 +307,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>18.06.2026.</span>
+        <span class="hr">prije 5 dana</span>
+        <span class="en">5 days ago</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/06/ludbreg-zbornik-haiku.html" target="_blank" rel="noopener">
@@ -287,9 +325,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>18.06.2026.</span>
+        <span class="hr">prije 5 dana</span>
+        <span class="en">5 days ago</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/poziv-na-11-sjednicu-gradskog-vijeca-grada-visa-2/" target="_blank" rel="noopener">
@@ -304,9 +343,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>18.06.2026.</span>
+        <span class="hr">prije 5 dana</span>
+        <span class="en">5 days ago</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/izvjestaj-nastavnog-zavoda-za-javno-zdravstvo-sdz-o-ispitivanju-kvalitete-zraka-na-podrucju-mjerne-postaje-vis/" target="_blank" rel="noopener">
@@ -321,9 +361,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>16.06.2026.</span>
+        <span class="hr">16. 6. 2026.</span>
+        <span class="en">16 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/odluka-o-sufinancranju-smjestaja-deficitarnih-zdravstvenih-radnika-zaposlenih-na-podrucju-grada-visa/" target="_blank" rel="noopener">
@@ -338,9 +379,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>16.06.2026.</span>
+        <span class="hr">16. 6. 2026.</span>
+        <span class="en">16 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/natjecaj-za-izbor-i-imenovanje-direktora-direktorice-turisticke-zajednice-grada-visa/" target="_blank" rel="noopener">
@@ -355,9 +397,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>16.06.2026.</span>
+        <span class="hr">16. 6. 2026.</span>
+        <span class="en">16 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/novosti/javni-natjecaj-za-imenovanje-direktora-direktorice-turisticke-zajednice-grada-visa-na-mandatno-razdoblje-od-4-godine/" target="_blank" rel="noopener">
@@ -372,9 +415,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>16.06.2026.</span>
+        <span class="hr">16. 6. 2026.</span>
+        <span class="en">16 Jun 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/06/zagrijavanje.html" target="_blank" rel="noopener">
@@ -389,9 +433,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>14.06.2026.</span>
+        <span class="hr">14. 6. 2026.</span>
+        <span class="en">14 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/obavijest-putnicima/" target="_blank" rel="noopener">
@@ -406,9 +451,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>12.06.2026.</span>
+        <span class="hr">12. 6. 2026.</span>
+        <span class="en">12 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/izbor-clanova-savjeta-mladih-grada-visa/" target="_blank" rel="noopener">
@@ -423,9 +469,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>12.06.2026.</span>
+        <span class="hr">12. 6. 2026.</span>
+        <span class="en">12 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/cak-tri-oskara-znanja-za-ucenice-srednje-skole-antun-matijasevic-karamaneo-vis/" target="_blank" rel="noopener">
@@ -440,9 +487,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>12.06.2026.</span>
+        <span class="hr">12. 6. 2026.</span>
+        <span class="en">12 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/reguliranje-statusa-poljoprivrednog-zemljista-u-arkod-u/" target="_blank" rel="noopener">
@@ -457,9 +505,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>11.06.2026.</span>
+        <span class="hr">11. 6. 2026.</span>
+        <span class="en">11 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/ii-javni-poziv-autotaksi-prijevoznicima-koji-ce-koristiti-autotaksi-stajaliste-u-2026-godini/" target="_blank" rel="noopener">
@@ -474,9 +523,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>11.06.2026.</span>
+        <span class="hr">11. 6. 2026.</span>
+        <span class="en">11 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/poziv-na-1-sjednicu-povjerenstva-za-izbor-i-imenovanja-2/" target="_blank" rel="noopener">
@@ -491,9 +541,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>10.06.2026.</span>
+        <span class="hr">10. 6. 2026.</span>
+        <span class="en">10 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/javni-poziv-ugostiteljima-na-tribinu-organizacija-javnog-pracenja-utakmica-svjetskog-prvenstva-u-nogometu/" target="_blank" rel="noopener">
@@ -508,9 +559,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>10.06.2026.</span>
+        <span class="hr">10. 6. 2026.</span>
+        <span class="en">10 Jun 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/06/smece-na-trajektnoj-luci.html" target="_blank" rel="noopener">
@@ -525,9 +577,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>08.06.2026.</span>
+        <span class="hr">8. 6. 2026.</span>
+        <span class="en">8 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/poziv-na-2-sjednicu-povjerenstva-za-naselja-na-podrucju-grada-visa/" target="_blank" rel="noopener">
@@ -542,9 +595,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>08.06.2026.</span>
+        <span class="hr">8. 6. 2026.</span>
+        <span class="en">8 Jun 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/06/hrpa-nagrada-stigla-na-otok-vis.html" target="_blank" rel="noopener">
@@ -559,9 +613,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>05.06.2026.</span>
+        <span class="hr">5. 6. 2026.</span>
+        <span class="en">5 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/obavijest-o-izvodenju-dezinsekcije-muha-i-tretman-za-dan-5-lipnja-2026-god/" target="_blank" rel="noopener">
@@ -576,9 +631,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>04.06.2026.</span>
+        <span class="hr">4. 6. 2026.</span>
+        <span class="en">4 Jun 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/06/oborine-u-svibnju.html" target="_blank" rel="noopener">
@@ -593,9 +649,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>03.06.2026.</span>
+        <span class="hr">3. 6. 2026.</span>
+        <span class="en">3 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/javni-natjecaj-za-prijam-u-sluzbu-u-grad-vis-jedinstveni-upravni-odjel-na-radno-mjesto-referent-komunalno-prometni-pomorski-redar-1-izvrsitelj-ica-na-neodredeno-vrijeme-uz-probni-rad-o/" target="_blank" rel="noopener">
@@ -610,9 +667,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>03.06.2026.</span>
+        <span class="hr">3. 6. 2026.</span>
+        <span class="en">3 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/javni-natjecaj-za-prijam-u-sluzbu-u-grad-vis-jedinstveni-upravni-odjel-na-radno-mjesto-voditelj-odsjeka-za-proracun-i-racunovodstveno-financijske-poslove-1-izvrsitelj-ica-na-neodredeno-v/" target="_blank" rel="noopener">
@@ -627,9 +685,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>02.06.2026.</span>
+        <span class="hr">2. 6. 2026.</span>
+        <span class="en">2 Jun 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/izmjena-i-dopuna-dnevnog-reda-i-nadopuna-materijala-za-9-sjednicu-gradskog-vijeca-grada-visa/" target="_blank" rel="noopener">
@@ -644,9 +703,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>02.06.2026.</span>
+        <span class="hr">2. 6. 2026.</span>
+        <span class="en">2 Jun 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/06/vrhovi-dubina-podvodna-bastina-sdz-issa.html" target="_blank" rel="noopener">
@@ -661,9 +721,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>29.05.2026.</span>
+        <span class="hr">29. 5. 2026.</span>
+        <span class="en">29 May 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/05/pro-inflatorne-mjere-nesposobne-vlade-rh.html" target="_blank" rel="noopener">
@@ -678,9 +739,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>29.05.2026.</span>
+        <span class="hr">29. 5. 2026.</span>
+        <span class="en">29 May 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/povodom-dana-drzavnosti/" target="_blank" rel="noopener">
@@ -695,9 +757,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>29.05.2026.</span>
+        <span class="hr">29. 5. 2026.</span>
+        <span class="en">29 May 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/ii-javni-natjecaj-za-davanje-u-zakup-javnih-povrsina-na-podrucju-grada-visa/" target="_blank" rel="noopener">
@@ -712,9 +775,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">gradvis.hr</span>
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
         
-        <span>28.05.2026.</span>
+        <span class="hr">28. 5. 2026.</span>
+        <span class="en">28 May 2026</span>
         
       </div>
       <h2><a href="https://www.gradvis.hr/obavijest-o-nastavku-radova-na-sanaciji-ceste-marinje-zemlje-mala-travna/" target="_blank" rel="noopener">
@@ -729,9 +793,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>27.05.2026.</span>
+        <span class="hr">27. 5. 2026.</span>
+        <span class="en">27 May 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/05/teorije-zavjere.html" target="_blank" rel="noopener">
@@ -746,9 +811,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>27.05.2026.</span>
+        <span class="hr">27. 5. 2026.</span>
+        <span class="en">27 May 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/05/autobusni-vozni-red.html" target="_blank" rel="noopener">
@@ -763,9 +829,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>20.05.2026.</span>
+        <span class="hr">20. 5. 2026.</span>
+        <span class="en">20 May 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/05/isusov-trn.html" target="_blank" rel="noopener">
@@ -780,9 +847,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>12.05.2026.</span>
+        <span class="hr">12. 5. 2026.</span>
+        <span class="en">12 May 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/05/antologija-haiku-for-soulmates.html" target="_blank" rel="noopener">
@@ -797,9 +865,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>06.05.2026.</span>
+        <span class="hr">6. 5. 2026.</span>
+        <span class="en">6 May 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/05/os-vis-pobjednik-programa-cuvari-bastine.html" target="_blank" rel="noopener">
@@ -814,9 +883,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>02.05.2026.</span>
+        <span class="hr">2. 5. 2026.</span>
+        <span class="en">2 May 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/05/padaline-na-otoku-visu-u-travnju.html" target="_blank" rel="noopener">
@@ -831,9 +901,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>01.05.2026.</span>
+        <span class="hr">1. 5. 2026.</span>
+        <span class="en">1 May 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/05/sretan-1-maj.html" target="_blank" rel="noopener">
@@ -848,9 +919,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>29.04.2026.</span>
+        <span class="hr">29. 4. 2026.</span>
+        <span class="en">29 Apr 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/04/promocija-slikovnice-macic-rulin.html" target="_blank" rel="noopener">
@@ -865,9 +937,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>28.04.2026.</span>
+        <span class="hr">28. 4. 2026.</span>
+        <span class="en">28 Apr 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/04/promocija-knjige-am-karamanea-vijesti.html" target="_blank" rel="noopener">
@@ -882,9 +955,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>26.04.2026.</span>
+        <span class="hr">26. 4. 2026.</span>
+        <span class="en">26 Apr 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/04/radna-akcija-ld-vis.html" target="_blank" rel="noopener">
@@ -899,9 +973,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>24.04.2026.</span>
+        <span class="hr">24. 4. 2026.</span>
+        <span class="en">24 Apr 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/04/svecani-koncert-zbora-i-orkestra-hgg-vis.html" target="_blank" rel="noopener">
@@ -916,9 +991,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>23.04.2026.</span>
+        <span class="hr">23. 4. 2026.</span>
+        <span class="en">23 Apr 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/04/dan-grada-visa-i-sv-jurja.html" target="_blank" rel="noopener">
@@ -933,9 +1009,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">islandvis.blogspot.com</span>
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
         
-        <span>23.04.2026.</span>
+        <span class="hr">23. 4. 2026.</span>
+        <span class="en">23 Apr 2026</span>
         
       </div>
       <h2><a href="https://islandvis.blogspot.com/2026/04/haiku-u-torontu.html" target="_blank" rel="noopener">
@@ -950,9 +1027,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>03.12.2025.</span>
+        <span class="hr">3. 12. 2025.</span>
+        <span class="en">3 Dec 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/javni-pozivi-i-natjecaji/odluka-o-dodjeli-potpora-za-advent-2025/" target="_blank" rel="noopener">
@@ -967,9 +1045,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>17.11.2025.</span>
+        <span class="hr">17. 11. 2025.</span>
+        <span class="en">17 Nov 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/javni-pozivi-i-natjecaji/javni-pozivza-koristenje-sajamskih-kucica-i-standova-u-sklopu-manifestacije-vis-advent-2025/" target="_blank" rel="noopener">
@@ -984,9 +1063,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>17.11.2025.</span>
+        <span class="hr">17. 11. 2025.</span>
+        <span class="en">17 Nov 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/novosti/javni-poziv-dogadanja-i-manifestacije-2025-2026/" target="_blank" rel="noopener">
@@ -1001,9 +1081,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>29.10.2025.</span>
+        <span class="hr">29. 10. 2025.</span>
+        <span class="en">29 Oct 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/novosti/bugava-jucer-danas-sutra-kusanje-mladih-vina-2025-i-pogled-u-buducnost-berba-je-bila-izvrsna/" target="_blank" rel="noopener">
@@ -1018,9 +1099,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>25.07.2025.</span>
+        <span class="hr">25. 7. 2025.</span>
+        <span class="en">25 Jul 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/novosti/nova-odluka-o-odobrenju-manifestacija-od-posebnog-znacaja-u-gradu-visu-promjena-datuma-odrzavanja-viske-noci-2025-g-zbog-najavljenih-losih-vremenskih-uvjeta/" target="_blank" rel="noopener">
@@ -1035,9 +1117,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>23.07.2025.</span>
+        <span class="hr">23. 7. 2025.</span>
+        <span class="en">23 Jul 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/vazne-obavijesti/javni-poziv-za-sudjelovanje-na-sajmu-otocnih-proizvoda-viska-noc-26-srpnja-2025/" target="_blank" rel="noopener">
@@ -1052,9 +1135,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>10.06.2025.</span>
+        <span class="hr">10. 6. 2025.</span>
+        <span class="en">10 Jun 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/novosti/odluka-o-ponistenju-natjecaja-za-za-radno-mjesto-informatora-recepcionera-m-z/" target="_blank" rel="noopener">
@@ -1069,9 +1153,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>28.05.2025.</span>
+        <span class="hr">28. 5. 2025.</span>
+        <span class="en">28 May 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/novosti/j-a-v-n-i-n-a-t-j-e-c-a-j-za-radno-mjesto-informatora-recepcionera-m-z/" target="_blank" rel="noopener">
@@ -1086,9 +1171,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>16.05.2025.</span>
+        <span class="hr">16. 5. 2025.</span>
+        <span class="en">16 May 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/kako-do-nas/plovidbeni-redovi/" target="_blank" rel="noopener">
@@ -1103,9 +1189,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>16.05.2025.</span>
+        <span class="hr">16. 5. 2025.</span>
+        <span class="en">16 May 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/kako-do-nas/trajektom-ili-katamaranom/" target="_blank" rel="noopener">
@@ -1120,9 +1207,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>16.05.2025.</span>
+        <span class="hr">16. 5. 2025.</span>
+        <span class="en">16 May 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/kako-do-nas/autobusni-red-voznje-komiza-vis-vis-komiza-3/" target="_blank" rel="noopener">
@@ -1137,9 +1225,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>05.05.2025.</span>
+        <span class="hr">5. 5. 2025.</span>
+        <span class="en">5 May 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/vazne-obavijesti/obavijest-korisnicima-evisitora/" target="_blank" rel="noopener">
@@ -1154,9 +1243,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>16.04.2025.</span>
+        <span class="hr">16. 4. 2025.</span>
+        <span class="en">16 Apr 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/novosti/odluka-o-imenovanju-direktora-tz/" target="_blank" rel="noopener">
@@ -1171,9 +1261,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>14.03.2025.</span>
+        <span class="hr">14. 3. 2025.</span>
+        <span class="en">14 Mar 2025</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/novosti/javni-natjecaj-za-imenovanje-direktora-direktorice-turisticke-zajednice-grada-visa/" target="_blank" rel="noopener">
@@ -1188,9 +1279,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>12.06.2024.</span>
+        <span class="hr">12. 6. 2024.</span>
+        <span class="en">12 Jun 2024</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/sport-i-glazba/viski-plivacki-maraton/" target="_blank" rel="noopener">
@@ -1205,9 +1297,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>12.06.2024.</span>
+        <span class="hr">12. 6. 2024.</span>
+        <span class="en">12 Jun 2024</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/sport-i-glazba/visko-kulturno-ljeto/" target="_blank" rel="noopener">
@@ -1222,9 +1315,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>12.06.2024.</span>
+        <span class="hr">12. 6. 2024.</span>
+        <span class="en">12 Jun 2024</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/sport-i-glazba/viska-regata/" target="_blank" rel="noopener">
@@ -1239,9 +1333,10 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">vis-tourism.com</span>
+        <span class="source-badge badge-vis-tourism">vis-tourism.com</span>
         
-        <span>12.06.2024.</span>
+        <span class="hr">12. 6. 2024.</span>
+        <span class="en">12 Jun 2024</span>
         
       </div>
       <h2><a href="https://www.vis-tourism.com/hr/korisne-informacije/u-slucaju-nesrece/" target="_blank" rel="noopener">
@@ -1256,7 +1351,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/potpuni-kaos-unatoc-skupoj-opremi-zivoti-pacijenata-s-otoka-i-dalje-su-ugrozeni-lijecnik-to-ce-se-dogadati-sve-dok/" target="_blank" rel="noopener">
@@ -1271,7 +1366,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/raspad-sustava-vatrogasni-zapovjednik-s-visa-mogao-je-biti-prevezen-katamaranom-evo-sto-kaze-ministrica/" target="_blank" rel="noopener">
@@ -1286,7 +1381,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/sustav-je-zakazao-sef-vatrogasaca-satima-cekao-hitnu-na-visu-dok-je-iskasljavao-krv/" target="_blank" rel="noopener">
@@ -1301,7 +1396,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/otoci-britanci-otkrili-vis-dragulj-gdje-je-sniman-holivudski-hit-mamma-mia-here-we-go-again/" target="_blank" rel="noopener">
@@ -1316,7 +1411,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/kultura-na-otoku-ajmo-donosi-vrhunsku-glazbu-i-humanitarnu-notu-na-vis-tijekom-sijecnja-i-veljace/" target="_blank" rel="noopener">
@@ -1331,7 +1426,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/vitar-i-nevera-vatrogasci-na-podrucju-visa-sinoc-spasili-sesnaest-osoba/" target="_blank" rel="noopener">
@@ -1346,7 +1441,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/kolaps-oko-visa-nova-katastrofa-prijeti-jadranu-invazivna-alga-vec-je-prekrila-kompletno-podmorje-komize/" target="_blank" rel="noopener">
@@ -1361,7 +1456,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/utopio-se-nadeno-tijelo-nijemca-koji-je-sinoc-nestao-kod-visa-trazili-ga-i-vojnim-zrakoplovom/" target="_blank" rel="noopener">
@@ -1376,7 +1471,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/od-vukovara-do-visa-ovo-su-sve-nekretnine-koje-cine-penavino-carstvo/" target="_blank" rel="noopener">
@@ -1391,7 +1486,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/vina-iz-vojnog-bunkera-na-visu-postoji-samo-nas-par-ludaka-koji-zelimo-saditi-nove-loze/" target="_blank" rel="noopener">
@@ -1406,7 +1501,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/udar-na-dzepove-porez-na-nekretnine-povecalo-215-gradova-i-opcina-evo-koje-su-lokalne-jedinice-rekorderi/" target="_blank" rel="noopener">
@@ -1421,7 +1516,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/pozar-na-visu-vatrogasci-objavili-zastrasujucu-snimku-deponija-u-plamenu-pogledajte/" target="_blank" rel="noopener">
@@ -1436,7 +1531,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/nove-informacije-pozar-na-visu-pod-kontrolom-ali-nije-ugasen-gori-iznad-bakra-aktivno-je-gasenje-po-rubovima/" target="_blank" rel="noopener">
@@ -1451,7 +1546,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/i-ove-godine-u-hrvatskoj-orban-se-odmara-na-visu-njegova-snimka-s-vlasnikom-popularnog-restorana-izazvala-lavinu-kritika/" target="_blank" rel="noopener">
@@ -1466,7 +1561,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/upozorenje-strucnjaka-zabrinutost-zbog-alge-u-samo-dvije-do-tri-godine-potpuno-prekrije-morsko-dno/" target="_blank" rel="noopener">
@@ -1481,7 +1576,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/dani-ranka-marinkovica-od-14-do-17-rujna-u-komizi-na-visu/" target="_blank" rel="noopener">
@@ -1496,7 +1591,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/buknuo-pozar-na-visu-vatrogasci-na-terenu/" target="_blank" rel="noopener">
@@ -1511,7 +1606,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/manje-poznata-ali-iznimno-vazna-bastina-visa-izlozba-u-klovicevim-dvorima/" target="_blank" rel="noopener">
@@ -1526,7 +1621,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/kakav-prizor-kod-visa-dronom-snimili-desetak-kitova/" target="_blank" rel="noopener">
@@ -1541,7 +1636,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">nacional.hr</span>
+        <span class="source-badge badge-nacional">nacional.hr</span>
         
       </div>
       <h2><a href="https://www.nacional.hr/uvjetna-kazna-za-zaposlenika-skole-na-visu-zbog-spolnog-uznemiravanja-kolegice/" target="_blank" rel="noopener">
@@ -1556,7 +1651,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/split/ma-kakav-game-of-thrones-turisti-se-u-splitu-raspametili-za-ovom-turom-pune-glisere-ko-ludi-sva-treperim-1561894" target="_blank" rel="noopener">
@@ -1569,7 +1664,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/otoci/vatrena-drama-na-otoku-u-splitskom-akvatoriju-pocelo-je-smecem-a-onda-iskljucen-je-35-kilovoltni-dalekovod-1555895" target="_blank" rel="noopener">
@@ -1584,7 +1679,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/otoci/mamma-mia-na-visu-nam-je-nemoguce-jos-jedan-nokaut-za-mlade-obitelji-tjeraju-nas-sa-skoja-a-vapiju-kako-im-trebamo-1546107" target="_blank" rel="noopener">
@@ -1599,7 +1694,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/mozaik/zivot/na-vis-iz-beograda-stigla-s-violinom-muz-purger-sa-skarama-za-vinograd-postali-su-pravi-otocani-uzivaju-u-zivotu-1521370" target="_blank" rel="noopener">
@@ -1614,7 +1709,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/otoci/obrat-u-prici-oko-vrijedne-nekretnine-na-koju-je-oko-bacio-bogati-juznoafrikanac-bespravno-gradi-povlacimo-suglasnost-1504565" target="_blank" rel="noopener">
@@ -1629,7 +1724,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/otoci/otocani-se-digli-na-noge-direktor-gradske-firme-pokrenuo-peticiju-ovo-je-pitanje-zivota-i-slobode-odlucivanja-1500106" target="_blank" rel="noopener">
@@ -1644,7 +1739,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/mozaik/panorama/hvaranin-otkriva-cari-komize-hotel-im-izgleda-jugoslavenski-ali-cak-i-sad-je-krcat-a-tek-ove-price-domacih-ljudi-1474917" target="_blank" rel="noopener">
@@ -1659,7 +1754,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/otoci/doznali-smo-kada-bi-trebala-biti-zavrsena-nova-ceska-vila-na-visu-uz-nju-ce-se-nalaziti-jos-jedan-hotel-i-osam-vila-1430281" target="_blank" rel="noopener">
@@ -1674,7 +1769,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/otoci/pepe-kalafot-na-visu-je-1900-bilo-tri-iljade-vagona-vina-danas-ih-je-350-eksplodiralo-je-nesto-drugo-nije-turizam-1428869" target="_blank" rel="noopener">
@@ -1689,7 +1784,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/otoci/oni-su-nasli-formulu-priustivog-stanovanja-pos-model-grada-visa-odlicno-funkcionira-mladi-dolaze-na-otok-i-ostaju-1427752" target="_blank" rel="noopener">
@@ -1704,7 +1799,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/otoci/viski-srednjoskolci-napravili-vrhunsku-galeriju-domacih-faca-nije-ovo-facebook-nego-1409483" target="_blank" rel="noopener">
@@ -1719,7 +1814,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/otoci/na-visu-odrzana-komemoracija-povodom-80-godisnjice-pogibije-prvog-saveznickog-zrakoplovca-na-otoku-visu-1401813" target="_blank" rel="noopener">
@@ -1734,7 +1829,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/otoci/luka-nizetic-u-komizi-ima-dva-restorana-i-vrsnu-trgovinu-a-sada-krece-u-novi-poslovni-pothvat-dozvola-je-sredena-1400229" target="_blank" rel="noopener">
@@ -1749,7 +1844,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/split/profesor-bolanca-o-nesreci-u-splitskim-vratima-doslo-je-do-propusta-upravljanja-katamaranom-i-jedrilicom-1563081" target="_blank" rel="noopener">
@@ -1764,7 +1859,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/dalmacija/zadar/maloljetnik-ostao-bez-mopeda-i-zaradio-kaznu-od-3-300-eura-popis-prekrsaja-je-impresivan-1563080" target="_blank" rel="noopener">
@@ -1779,7 +1874,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/dalmacija/zadar/matic-se-nakon-dvije-godine-vraca-u-saborske-klupe-fokus-ostaje-na-zastiti-prostora-i-okolisa-1563079" target="_blank" rel="noopener">
@@ -1794,7 +1889,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/dalmacija/zadar/tesko-ozlijeden-motociklist-u-prometnoj-nesreci-u-bibinjama-protiv-vozacice-slijedi-kaznena-prijava-1563078" target="_blank" rel="noopener">
@@ -1809,7 +1904,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/sport/vise-od-sporta/dok-traje-rasprava-oko-modrica-engleska-zvijezda-poslala-snaznu-poruku-on-je-jedan-i-jedini-1563077" target="_blank" rel="noopener">
@@ -1824,7 +1919,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/mozaik/scena/showbiz/video-domaca-pjevacica-koja-je-vec-odavno-rezervirala-arenu-zagreb-za-2030-predstavila-novi-spot-u-vrucem-izdanju-1563075" target="_blank" rel="noopener">
@@ -1839,7 +1934,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/obala/zgrada-na-osejavi-sa-seizmografom-dana-je-gradu-na-trajno-koristenje-kako-je-sada-istekao-ugovor-tko-ima-planove-1563074" target="_blank" rel="noopener">
@@ -1854,7 +1949,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/duh-pasonih-pokladih" target="_blank" rel="noopener">
@@ -1869,7 +1964,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/bisevo-trail-2026" target="_blank" rel="noopener">
@@ -1884,7 +1979,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/djecji-festival-kalanko-2" target="_blank" rel="noopener">
@@ -1899,7 +1994,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/mares-uwpm-world-masters" target="_blank" rel="noopener">
@@ -1914,7 +2009,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/ane-paska-koncart-salon-za-uljepsavanje-duse" target="_blank" rel="noopener">
@@ -1929,7 +2024,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/medunarodni-dan-joge" target="_blank" rel="noopener">
@@ -1944,7 +2039,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/rojena-valo-2" target="_blank" rel="noopener">
@@ -1959,7 +2054,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/pricigin" target="_blank" rel="noopener">
@@ -1974,7 +2069,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/klapa-komiza-u-komuni-6" target="_blank" rel="noopener">
@@ -1989,7 +2084,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/geopark-viski-arhipelag-predavanje-najstarije-stijene-na-jadranu" target="_blank" rel="noopener">
@@ -2004,7 +2099,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/iskustvo-gajete-falkuse" target="_blank" rel="noopener">
@@ -2019,7 +2114,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/predstava-direkt-u-glavu-b-glad-produkcija" target="_blank" rel="noopener">
@@ -2034,7 +2129,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/zalogaj-velikog-mora-2" target="_blank" rel="noopener">
@@ -2049,7 +2144,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/geopark-viski-arhipelag-predavanje-geologija-otoka-biseva" target="_blank" rel="noopener">
@@ -2064,7 +2159,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/glazbena-vecer-setnjom-kroz-evergreene-kiara-generalic" target="_blank" rel="noopener">
@@ -2079,7 +2174,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/splicka-scena-sajd-kvest" target="_blank" rel="noopener">
@@ -2094,7 +2189,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/histrioni-covjece-ne-ljubi-se-predstava-za-odrasle" target="_blank" rel="noopener">
@@ -2109,7 +2204,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/paint-sip-jazz-kreativna-vecer-slikanja-uz-vino-gin-i-live-jazz" target="_blank" rel="noopener">
@@ -2124,7 +2219,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/predstava-za-djecu-pale-sam-na-svijetu" target="_blank" rel="noopener">
@@ -2139,7 +2234,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/sport/tenis/legenda-zenskog-tenisa-dobila-wild-card-za-wimbledon-posljednji-je-put-tamo-slavila-prije-deset-godina-1563550" target="_blank" rel="noopener">
@@ -2154,7 +2249,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/sport/domaci-nogomet/engleska-je-arhivirana-i-sve-je-okrenuto-prema-panami-mladi-reprezentativci-otkrili-situaciju-medu-vatrenima-1563549" target="_blank" rel="noopener">
@@ -2169,7 +2264,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/split-i-zupanija/split/adi-sose-na-znjanu-dodite-da-pravimo-magiju-regionalna-zvijezda-raspametila-split-popio-sam-tri-kave-a-onda-1563548" target="_blank" rel="noopener">
@@ -2184,7 +2279,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/sport/strani-nogomet/lamine-yamal-svojim-pogotkom-izgurao-messija-za-jedno-mjesto-i-messija-sad-smo-stigli-na-prvenstvo-i-idemo-po-jos-1563546" target="_blank" rel="noopener">
@@ -2199,7 +2294,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/sport/strani-nogomet/velika-vecer-vratara-favorizirana-belgija-dobro-prosla-i-s-igracem-manje-uspjela-izvuci-bod-protiv-irana-1563545" target="_blank" rel="noopener">
@@ -2214,7 +2309,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/sport/strani-nogomet/iracki-izbornik-nasmijao-sve-svojom-jedinstvenom-idejom-kako-zaustaviti-francuske-napadace-na-celu-s-mbappeom-1563544" target="_blank" rel="noopener">
@@ -2229,7 +2324,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">slobodnadalmacija.hr</span>
+        <span class="source-badge badge-slobodna">slobodnadalmacija.hr</span>
         
       </div>
       <h2><a href="https://slobodnadalmacija.hr/sport/strani-nogomet/zvijezda-paname-sanja-o-skorasnjem-susretu-s-modricem-bio-bih-zahvalan-na-toj-prilici-da-dobijem-njegov-dres-1563543" target="_blank" rel="noopener">
@@ -2244,7 +2339,7 @@
     
     <div class="article">
       <div class="article-meta">
-        <span class="source-badge">tz-komiza.hr</span>
+        <span class="source-badge badge-tz-komiza">tz-komiza.hr</span>
         
       </div>
       <h2><a href="https://www.tz-komiza.hr/dogadanja/klapa-komiza-u-komuni-7" target="_blank" rel="noopener">
@@ -2289,12 +2384,12 @@
         <div class="stat-row">
           <span class="stat-label hr">Temperatura mora</span>
           <span class="stat-label en">Sea temperature</span>
-          <span class="stat-value">25.4 °C</span>
+          <span class="stat-value">25.2 °C</span>
         </div>
         <div class="stat-row">
           <span class="stat-label hr">Visina vala</span>
           <span class="stat-label en">Wave height</span>
-          <span class="stat-value">0.52 m</span>
+          <span class="stat-value">0.48 m</span>
         </div>
         <div class="stat-row">
           <span class="stat-label hr">Smjer vala</span>
@@ -2304,7 +2399,7 @@
         <div class="stat-row">
           <span class="stat-label hr">Period vala</span>
           <span class="stat-label en">Wave period</span>
-          <span class="stat-value">3.0 s</span>
+          <span class="stat-value">3.4 s</span>
         </div>
       </div>
     </div>
@@ -2378,8 +2473,8 @@
 </div>
 
 <footer>
-  <span class="hr">Generirano automatski &bull; Izvori: gradvis.hr, vis-tourism.com, tz-komiza.hr, islandvis.blogspot.com, slobodnadalmacija.hr, nacional.hr, index.hr</span>
-  <span class="en">Auto-generated &bull; Sources: gradvis.hr, vis-tourism.com, tz-komiza.hr, islandvis.blogspot.com, slobodnadalmacija.hr, nacional.hr, index.hr</span>
+  <span class="hr">Generirano automatski &bull; Izvori: gradvis.hr, vis-tourism.com, tz-komiza.hr, islandvis.blogspot.com, slobodnadalmacija.hr, nacional.hr, index.hr, dalmacijadanas.hr</span>
+  <span class="en">Auto-generated &bull; Sources: gradvis.hr, vis-tourism.com, tz-komiza.hr, islandvis.blogspot.com, slobodnadalmacija.hr, nacional.hr, index.hr, dalmacijadanas.hr</span>
 </footer>
 
 <script>
@@ -2390,7 +2485,6 @@
       btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
     });
   }
-  // restore saved preference on load
   const saved = localStorage.getItem('vis-lang') || 'hr';
   document.documentElement.setAttribute('data-lang', saved);
   document.querySelectorAll('.lang-btn').forEach(btn => {
