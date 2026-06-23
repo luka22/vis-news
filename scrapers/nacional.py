@@ -12,7 +12,7 @@ class NacionalScraper(BaseScraper):
 
     def fetch(self) -> list[Article]:
         try:
-            resp = get(TAG_URL)
+            resp = get(TAG_URL, use_proxy=True)
             resp.raise_for_status()
         except Exception as e:
             print(f"[nacional] fetch error: {e}")
