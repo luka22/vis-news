@@ -1,3 +1,4 @@
+import os
 import httpx
 from core.storage import Article
 
@@ -14,10 +15,15 @@ HEADERS = {
     "Connection": "keep-alive",
     "Upgrade-Insecure-Requests": "1",
 }
-TIMEOUT = 20
+TIMEOUT = 30
 
 
-def get(url: str) -> httpx.Response:
+def get(url: str, use_proxy: bool = False) -> httpx.Response:
+    """Fetch a URL, optionally routing through ScraperAPI for Cloudflare-blocked sites."""
+    scraper_key = os.environ.get("SCRAPERAPI_KEY")
+    if use_proxy and scraper_key:
+        proxy_url = f"http://api.scraperapi.com?api_key={scraper_key}&url={url}"
+        return httpx.get(proxy_url, timeout=TIMEOUT, follow_redirects=True)
     return httpx.get(url, headers=HEADERS, timeout=TIMEOUT, follow_redirects=True)
 
 
