@@ -15,6 +15,7 @@ from scrapers.index_hr import IndexHrScraper
 from scrapers.slobodnadalmacija import SlobodnaDalmacijaScraper
 from scrapers.vis_tourism import VisTourismScraper
 from scrapers.tz_komiza import TzKomizaScraper
+from scrapers.dalmacijadanas import DalmacijaDanasScraper
 from core.storage import filter_new, mark_seen, get_recent
 from core.dedup import dedup_cross_source
 from core.summarize import summarize_articles
@@ -28,6 +29,7 @@ SCRAPERS = [
     SlobodnaDalmacijaScraper(),
     VisTourismScraper(),
     TzKomizaScraper(),
+    DalmacijaDanasScraper(),
 ]
 
 
