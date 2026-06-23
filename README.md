@@ -21,25 +21,48 @@ Automated weekly news aggregator for [Vis](https://en.wikipedia.org/wiki/Vis), a
 ## How it works
 
 ```
-Every Monday 07:00 UTC
-        │
-        ▼
-1. FETCH      — all 7 scrapers run, collect articles
-        │
-        ▼
-2. DEDUP      — filter already-seen URLs (SQLite), fuzzy-match cross-source duplicates
-        │
-        ▼
-3. SUMMARISE  — Claude generates 2–3 sentence summaries in Split dialect Croatian + English
-        │
-        ▼
-4. STORE      — mark articles as seen in seen.db (persisted between runs)
-        │
-        ▼
-5. RENDER     — Jinja2 renders docs/index.html with all articles from the last 8 days
-        │
-        ▼
-6. DEPLOY     — GitHub Pages publishes the updated static site
+┌──────────────────────── GitHub Actions · Monday 07:00 UTC ────────────────────────┐
+│                                                                                    │
+│   DIRECT ACCESS                          CLOUDFLARE BLOCKED                       │
+│   ┌──────────────────────┐               ┌──────────────────────┐                 │
+│   │ gradvis.hr           │               │ nacional.hr          │                 │
+│   │ vis-tourism.com      │               │ slobodnadalmacija.hr │                 │
+│   │ islandvis.blogspot   │               └──────────┬───────────┘                 │
+│   │ tz-komiza.hr         │                          │ blocked by                  │
+│   │ dalmacijadanas.hr    │                          │ Cloudflare                  │
+│   │ index.hr (RSS)       │               ┌──────────▼───────────┐                 │
+│   └──────────┬───────────┘               │  ScraperAPI          │                 │
+│              │                           │  residential proxy   │                 │
+│              │                           └──────────┬───────────┘                 │
+│              │                                      │                             │
+│              └──────────────────┬───────────────────┘                             │
+│                                 │                                                 │
+│                                 ▼                                                 │
+│                    ┌────────────────────────┐   ┌─────────────────────────┐      │
+│                    │         DEDUP          │◄──│ seen.db  (SQLite)       │      │
+│                    │  URL hash · fuzzy title│   │ cached between runs     │      │
+│                    └────────────┬───────────┘   └─────────────────────────┘      │
+│                                 │                                                 │
+│                                 ▼                                                 │
+│                    ┌────────────────────────┐                                     │
+│                    │       SUMMARISE        │  claude-sonnet-4-6                  │
+│                    │  Croatian Split dialect│                                     │
+│                    │  + English             │                                     │
+│                    └────────────┬───────────┘                                     │
+│                                 │                                                 │
+│                                 ▼                                                 │
+│                    ┌────────────────────────┐   ┌─────────────────────────┐      │
+│                    │         RENDER         │◄──│ Live sidebar            │      │
+│                    │  Jinja2 → index.html   │   │ sea temp · sun · Windy  │      │
+│                    └────────────┬───────────┘   └─────────────────────────┘      │
+│                                 │                                                 │
+└─────────────────────────────────┼─────────────────────────────────────────────────┘
+                                  │
+                                  ▼
+                       ┌──────────────────────┐
+                       │    GitHub Pages      │
+                       │    visnews.hr (TBD)  │
+                       └──────────────────────┘
 ```
 
 ---
