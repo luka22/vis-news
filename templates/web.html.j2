@@ -232,7 +232,10 @@
         <span>{{ article.published.strftime('%d.%m.%Y.') }}</span>
         {% endif %}
       </div>
-      <h2><a href="{{ article.url }}" target="_blank" rel="noopener">{{ article.title }}</a></h2>
+      <h2><a href="{{ article.url }}" target="_blank" rel="noopener">
+        <span class="hr">{{ article.title }}</span>
+        <span class="en">{{ article.title_en or article.title }}</span>
+      </a></h2>
       {% if article.summary_hr %}
       <p class="summary hr">{{ article.summary_hr }}</p>
       {% endif %}

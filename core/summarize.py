@@ -26,6 +26,7 @@ _SYSTEM = """Ti si urednik lokalnih viških novina. Za svaki članak pišeš dva
 _USER_TEMPLATE = """Write a short summary (2-3 sentences) for each of the following articles from Vis island.
 Return a JSON array where each element has:
 - "url_hash": string (copy from input)
+- "title_en": string (English translation of the original title)
 - "summary_hr": string (summary in Split/Dalmatian dialect Croatian)
 - "summary_en": string (summary in English)
 
@@ -66,6 +67,7 @@ def _summarize_batch(batch: list[Article]) -> dict[str, dict]:
 
     return {
         item["url_hash"]: {
+            "title_en":   item.get("title_en", ""),
             "summary_hr": item.get("summary_hr", ""),
             "summary_en": item.get("summary_en", ""),
         }
@@ -85,6 +87,7 @@ def summarize_articles(articles: list[Article]) -> list[Article]:
 
     for article in articles:
         s = summaries.get(article.url_hash, {})
+        article.title_en   = s.get("title_en", "")
         article.summary_hr = s.get("summary_hr", "")
         article.summary_en = s.get("summary_en", "")
 

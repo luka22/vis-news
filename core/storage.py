@@ -16,6 +16,7 @@ class Article:
     body: str = ""
     summary_hr: str = ""
     summary_en: str = ""
+    title_en: str = ""
     url_hash: str = field(init=False)
 
     def __post_init__(self):
@@ -35,14 +36,15 @@ def get_conn() -> sqlite3.Connection:
             published TEXT,
             summary_hr TEXT,
             summary_en TEXT,
+            title_en TEXT,
             fetched_at TEXT NOT NULL
         )
     """)
-    # migrate existing DBs that don't have summary_en yet
-    try:
-        conn.execute("ALTER TABLE seen ADD COLUMN summary_en TEXT")
-    except sqlite3.OperationalError:
-        pass  # column already exists
+    for col in ("summary_en", "title_en"):
+        try:
+            conn.execute(f"ALTER TABLE seen ADD COLUMN {col} TEXT")
+        except sqlite3.OperationalError:
+            pass  # column already exists
     conn.commit()
     return conn
 
@@ -63,6 +65,7 @@ def get_recent(days: int = 8) -> list[Article]:
         a = Article(url=row["url"], title=row["title"], source=row["source"])
         a.summary_hr = row["summary_hr"] or ""
         a.summary_en = row["summary_en"] or ""
+        a.title_en = row["title_en"] or ""
         if row["published"]:
             try:
                 from dateutil import parser as dp
@@ -92,7 +95,7 @@ def mark_seen(articles: list[Article]) -> None:
     conn = get_conn()
     now = datetime.now(UTC).isoformat()
     conn.executemany(
-        "INSERT OR IGNORE INTO seen VALUES (?,?,?,?,?,?,?,?)",
+        "INSERT OR IGNORE INTO seen VALUES (?,?,?,?,?,?,?,?,?)",
         [
             (
                 a.url_hash,
@@ -102,6 +105,7 @@ def mark_seen(articles: list[Article]) -> None:
                 a.published.isoformat() if a.published else None,
                 a.summary_hr,
                 a.summary_en,
+                a.title_en,
                 now,
             )
             for a in articles
