@@ -3,6 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'none';
+    script-src 'unsafe-inline' https://www.windguru.cz;
+    style-src 'unsafe-inline';
+    img-src 'self' https://www.gradvis.hr https://static.windguru.cz https://www.windguru.cz data:;
+    frame-src https://embed.windy.com;
+    connect-src https://www.windguru.cz;
+    font-src 'self';
+    base-uri 'self';
+    object-src 'none';
+    form-action 'none';
+  " />
   <title>Viške novosti / Vis Island News</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
