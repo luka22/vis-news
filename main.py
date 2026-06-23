@@ -41,7 +41,8 @@ def main() -> None:
     for scraper in SCRAPERS:
         try:
             found = scraper.fetch()
-            print(f"[{scraper.source}] {len(found)} articles fetched")
+            status = f"{len(found)} articles" if found else "0 articles (blocked or empty)"
+            print(f"[{scraper.source}] {status}")
             all_articles.extend(found)
         except Exception as e:
             print(f"[{scraper.source}] ERROR: {e}", file=sys.stderr)
