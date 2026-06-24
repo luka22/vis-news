@@ -13,6 +13,7 @@ class Article:
     title: str
     source: str
     published: datetime | None = None
+    fetched_at: datetime | None = None
     body: str = ""
     summary_hr: str = ""
     summary_en: str = ""
@@ -66,6 +67,12 @@ def get_recent(days: int = 8) -> list[Article]:
         a.summary_hr = row["summary_hr"] or ""
         a.summary_en = row["summary_en"] or ""
         a.title_en = row["title_en"] or ""
+        if row["fetched_at"]:
+            try:
+                from dateutil import parser as dp
+                a.fetched_at = dp.parse(row["fetched_at"])
+            except Exception:
+                pass
         if row["published"]:
             try:
                 from dateutil import parser as dp
