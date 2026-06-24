@@ -255,11 +255,45 @@
       font-family: sans-serif;
     }
 
+    /* ── mobile stats strip ── */
+    .mobile-stats {
+      display: none;
+      background: #0f3050;
+      padding: 0.4rem 0.5rem;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+    .mstat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.3rem 0.6rem;
+    }
+    .mstat-label {
+      font-family: sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .mstat-val {
+      font-family: sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
     /* ── responsive ── */
     @media (max-width: 760px) {
       .page { grid-template-columns: 1fr; }
       .sidebar { position: static; }
       header h1 { font-size: 1.4rem; }
+      .mobile-stats { display: flex; }
+      /* sea/sun stats shown in strip above — hide sidebar duplicates */
+      .widget-sea, .widget-sun { display: none; }
+      /* iframes are unusable at mobile width */
+      .widget-windy, .widget-windguru { display: none; }
     }
 
     /* ── print ── */
@@ -304,6 +338,34 @@
          alt="Grb Grada Visa" />
   </div>
 </header>
+
+<!-- mobile stats strip: key numbers below header, hidden on desktop -->
+<div class="mobile-stats">
+  {% if sidebar.sea %}
+  <div class="mstat">
+    <span class="mstat-label hr">Temp. mora</span>
+    <span class="mstat-label en">Sea temp</span>
+    <span class="mstat-val">{{ sidebar.sea.sea_temp }}&thinsp;°C</span>
+  </div>
+  <div class="mstat">
+    <span class="mstat-label hr">Val</span>
+    <span class="mstat-label en">Waves</span>
+    <span class="mstat-val">{{ sidebar.sea.wave_height }}&thinsp;m</span>
+  </div>
+  {% endif %}
+  {% if sidebar.sun %}
+  <div class="mstat">
+    <span class="mstat-label hr">Izlazak ☀️</span>
+    <span class="mstat-label en">Sunrise ☀️</span>
+    <span class="mstat-val">{{ sidebar.sun.sunrise }}</span>
+  </div>
+  <div class="mstat">
+    <span class="mstat-label hr">Zalazak 🌅</span>
+    <span class="mstat-label en">Sunset 🌅</span>
+    <span class="mstat-val">{{ sidebar.sun.sunset }}</span>
+  </div>
+  {% endif %}
+</div>
 
 {% set badge_class = {
   'gradvis.hr':          'badge-gradvis',
@@ -384,7 +446,7 @@
   <aside class="sidebar">
 
     <!-- Windy wind map -->
-    <div class="widget">
+    <div class="widget widget-windy">
       <div class="widget-title">
         <span class="hr">🌬 Vjetar &amp; Vrijeme</span>
         <span class="en">🌬 Wind &amp; Weather</span>
@@ -401,7 +463,7 @@
 
     <!-- Sea conditions -->
     {% if sidebar.sea %}
-    <div class="widget">
+    <div class="widget widget-sea">
       <div class="widget-title">
         <span class="hr">🌊 More — trenutno stanje</span>
         <span class="en">🌊 Sea Conditions</span>
@@ -433,7 +495,7 @@
 
     <!-- Sun times -->
     {% if sidebar.sun %}
-    <div class="widget">
+    <div class="widget widget-sun">
       <div class="widget-title">
         <span class="hr">☀️ Sunce danas</span>
         <span class="en">☀️ Daylight</span>
@@ -459,7 +521,7 @@
     {% endif %}
 
     <!-- Windguru forecast -->
-    <div class="widget">
+    <div class="widget widget-windguru">
       <div class="widget-title">📊 Windguru</div>
       <div class="widget-body" style="padding: 0.75rem;">
         <script type="text/javascript">

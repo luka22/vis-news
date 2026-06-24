@@ -81,7 +81,7 @@ right to submit it under the project licence
 ([DCO](https://developercertificate.org/)):
 
 ```
-Signed-off-by: Your Name <your@email.com>
+Signed-off-by: Your Name <your-username@users.noreply.github.com>
 ```
 
 ---
