@@ -35,22 +35,14 @@ def _write_sitemap(generated_at: datetime) -> None:
     (DOCS_DIR / "sitemap.xml").write_text(sitemap, encoding="utf-8")
 
 
-def _relative_date(dt, lang: str = "hr") -> str:
+def _fmt_date(dt, lang: str = "hr") -> str:
     if not dt:
         return ""
-    now = datetime.now(UTC)
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=UTC)
-    days = (now - dt).days
     if lang == "hr":
-        if days == 0: return "danas"
-        if days == 1: return "jučer"
-        if days < 7:  return f"prije {days} dana"
         return dt.strftime("%-d. %-m. %Y.")
     else:
-        if days == 0: return "today"
-        if days == 1: return "yesterday"
-        if days < 7:  return f"{days} days ago"
         return dt.strftime("%-d %b %Y")
 
 
@@ -58,12 +50,19 @@ def render(articles: list[Article], generated_at: datetime | None = None) -> Pat
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     now = generated_at or datetime.now(UTC)
     env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)), autoescape=True)
-    env.filters["reldate_hr"] = lambda dt: _relative_date(dt, "hr")
-    env.filters["reldate_en"] = lambda dt: _relative_date(dt, "en")
+    env.filters["reldate_hr"] = lambda dt: _fmt_date(dt, "hr")
+    env.filters["reldate_en"] = lambda dt: _fmt_date(dt, "en")
     tmpl = env.get_template("web.html.j2")
     sidebar = fetch_sidebar()
-    local     = [a for a in articles if a.source in LOCAL_SOURCES]
-    regional  = [a for a in articles if a.source in REGIONAL_SOURCES]
+    local     = [a for a in articles if a.source in LOCAL_SOURCES][:25]
+    # one article per regional source, most recently fetched first
+    seen_sources: set[str] = set()
+    regional = []
+    for a in articles:
+        if a.source in REGIONAL_SOURCES and a.source not in seen_sources:
+            regional.append(a)
+            seen_sources.add(a.source)
+    regional = regional[:3]
     html = tmpl.render(
         articles=local,
         featured=regional,

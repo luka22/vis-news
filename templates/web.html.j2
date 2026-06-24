@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hr">
+<html lang="hr" data-lang="hr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -40,12 +40,10 @@
       line-height: 1.75;
     }
 
-    /* ── Croatian flag accent stripe ── */
+    /* ── top accent ── */
     .flag-stripe {
-      height: 4px;
-      background: linear-gradient(to right,
-        #D4002A 33.33%, #ffffff 33.33%,
-        #ffffff 66.66%, #003DA5 66.66%);
+      height: 3px;
+      background: #D4002A;
     }
 
     /* ── language toggle ── */
@@ -143,23 +141,51 @@
     .article h2 a:hover { text-decoration: underline; }
     .summary { font-size: 0.93rem; color: #3d3730; font-style: italic; }
 
-    /* ── izdvajamo section ── */
-    .section-heading {
+    /* ── izdvajamo strip ── */
+    .izdvajamo {
+      background: #f0ebe0;
+      border-top: 1px solid #d9cebc;
+      border-bottom: 1px solid #d9cebc;
+      padding: 1.25rem 1rem;
+    }
+    .izdvajamo-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .izdvajamo-label {
       font-family: sans-serif;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #9a8e7c;
-      border-top: 2px solid #d9cebc;
-      padding-top: 1.5rem;
-      margin-top: 0.5rem;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.85rem;
     }
-    .article.featured {
-      padding: 1rem 0.5rem;
+    .izdvajamo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
     }
-    .article.featured h2 { font-size: 1rem; }
+    .izdvajamo-card {
+      background: #fff;
+      border-radius: 5px;
+      border: 1px solid #d9cebc;
+      padding: 0.7rem 0.8rem;
+      transition: box-shadow 0.12s;
+    }
+    .izdvajamo-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .izdvajamo-card .article-meta { margin-bottom: 0.3rem; }
+    .izdvajamo-card h3 {
+      font-size: 0.88rem;
+      line-height: 1.35;
+      margin-bottom: 0;
+    }
+    .izdvajamo-card h3 a { color: #1a4a6b; text-decoration: none; }
+    .izdvajamo-card h3 a:hover { text-decoration: underline; }
+
+    @media (max-width: 760px) {
+      .izdvajamo-grid { grid-template-columns: 1fr; }
+    }
 
     /* ── source badge colours ── */
     .badge-gradvis       { background: #1a4a6b; }
@@ -218,6 +244,7 @@
     }
     .widget-body a.wlink:first-child { border-top: none; }
     .widget-body a.wlink:hover { text-decoration: underline; }
+    .widget-body a.ferry-link { background: #f5f0e8; line-height: 1.5; }
 
     /* ── footer ── */
     footer {
@@ -289,6 +316,35 @@
   'dalmacijadanas.hr':   'badge-dalmacijadanas',
 } %}
 
+{% if featured %}
+<div class="izdvajamo">
+  <div class="izdvajamo-inner">
+    <div class="izdvajamo-label">
+      <span class="hr">Vis u medijima</span>
+      <span class="en">Vis in the media</span>
+    </div>
+    <div class="izdvajamo-grid">
+      {% for article in featured %}
+      {% set date_dt = article.published or article.fetched_at %}
+      <div class="izdvajamo-card">
+        <div class="article-meta">
+          <span class="source-badge {{ badge_class.get(article.source, 'badge-gradvis') }}">{{ article.source }}</span>
+          {% if date_dt %}
+          <span class="hr">{{ date_dt | reldate_hr }}</span>
+          <span class="en">{{ date_dt | reldate_en }}</span>
+          {% endif %}
+        </div>
+        <h3><a href="{{ article.url }}" target="_blank" rel="noopener">
+          <span class="hr">{{ article.title }}</span>
+          <span class="en">{{ article.title_en or article.title }}</span>
+        </a></h3>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
 <div class="page">
 
   <!-- ── articles ── -->
@@ -321,35 +377,6 @@
       {% endif %}
     </div>
     {% endfor %}
-
-    {% if featured %}
-    <div class="section-heading">
-      <span class="hr">Izdvajamo</span>
-      <span class="en">Featured</span>
-    </div>
-
-    {% for article in featured %}
-    <div class="article featured">
-      <div class="article-meta">
-        <span class="source-badge {{ badge_class.get(article.source, 'badge-gradvis') }}">{{ article.source }}</span>
-        {% if article.published %}
-        <span class="hr">{{ article.published | reldate_hr }}</span>
-        <span class="en">{{ article.published | reldate_en }}</span>
-        {% endif %}
-      </div>
-      <h2><a href="{{ article.url }}" target="_blank" rel="noopener">
-        <span class="hr">{{ article.title }}</span>
-        <span class="en">{{ article.title_en or article.title }}</span>
-      </a></h2>
-      {% if article.summary_hr %}
-      <p class="summary hr">{{ article.summary_hr }}</p>
-      {% endif %}
-      {% if article.summary_en %}
-      <p class="summary en">{{ article.summary_en }}</p>
-      {% endif %}
-    </div>
-    {% endfor %}
-    {% endif %}
 
   </main>
 
@@ -460,7 +487,10 @@
         <span class="en">🔗 Useful Links</span>
       </div>
       <div class="widget-body">
-        <a class="wlink" href="https://www.jadrolinija.hr/en/ferry-lines/domestic-lines/vis-split" target="_blank" rel="noopener">🚢 Jadrolinija — <span class="hr">Red plovidbe Vis–Split</span><span class="en">Vis–Split Ferry</span></a>
+        <a class="wlink ferry-link" href="https://www.jadrolinija.hr/hr/trajektne-linije/domace-linije/vis-split" target="_blank" rel="noopener">
+          🚢 <strong><span class="hr">Red plovidbe Vis–Split</span><span class="en">Vis–Split Ferry</span></strong><br>
+          <span style="font-size:0.75rem; opacity:0.75;"><span class="hr">Klikni za aktualni raspored →</span><span class="en">Click for live timetable →</span></span>
+        </a>
         <a class="wlink" href="https://www.vis-tourism.com/hr/" target="_blank" rel="noopener"><span class="hr">TZ Vis – Turistička zajednica</span><span class="en">Vis Tourism Board</span></a>
         <a class="wlink" href="https://www.tz-komiza.hr/" target="_blank" rel="noopener"><span class="hr">TZ Komiža – Događanja</span><span class="en">Komiža Events</span></a>
         <a class="wlink" href="https://www.gradvis.hr/" target="_blank" rel="noopener"><span class="hr">Grad Vis – Službene stranice</span><span class="en">City of Vis – Official Site</span></a>
@@ -477,17 +507,26 @@
 </footer>
 
 <script>
+  // restore language before paint to avoid flash of wrong language
+  (function() {
+    const saved = localStorage.getItem('vis-lang') || 'hr';
+    document.documentElement.setAttribute('data-lang', saved);
+  })();
+
   function setLang(lang) {
     document.documentElement.setAttribute('data-lang', lang);
     localStorage.setItem('vis-lang', lang);
+    document.documentElement.setAttribute('lang', lang);
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
     });
   }
-  const saved = localStorage.getItem('vis-lang') || 'hr';
-  document.documentElement.setAttribute('data-lang', saved);
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent === saved.toUpperCase());
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const saved = localStorage.getItem('vis-lang') || 'hr';
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent === saved.toUpperCase());
+    });
   });
 </script>
 
