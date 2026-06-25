@@ -255,11 +255,50 @@
       font-family: sans-serif;
     }
 
+    /* ── mobile stats strip ── */
+    .mobile-stats {
+      display: none;
+      background: #0f3050;
+      padding: 0.4rem 0.5rem;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+    .mstat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.3rem 0.6rem;
+    }
+    .mstat-label {
+      font-family: sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .mstat-val {
+      font-family: sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .mstat-divider {
+      width: 100%;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      margin: 0.1rem 0;
+    }
+
     /* ── responsive ── */
     @media (max-width: 760px) {
       .page { grid-template-columns: 1fr; }
       .sidebar { position: static; }
       header h1 { font-size: 1.4rem; }
+      .mobile-stats { display: flex; }
+      /* sea/sun stats shown in strip above — hide sidebar duplicates */
+      .widget-sea, .widget-sun { display: none; }
+      /* iframes are unusable at mobile width */
+      .widget-windy, .widget-windguru { display: none; }
     }
 
     /* ── print ── */
@@ -295,8 +334,8 @@
         <span class="en">Vis Island News</span>
       </h1>
       <p>
-        <span class="hr">25 vijesti &mdash; 24. 06. 2026.</span>
-        <span class="en">25 stories &mdash; 24 June 2026</span>
+        <span class="hr">25 vijesti &mdash; ažurirano 25. 06. 2026.</span>
+        <span class="en">25 stories &mdash; updated 25 June 2026</span>
       </p>
     </div>
     <img class="grb"
@@ -304,6 +343,51 @@
          alt="Grb Grada Visa" />
   </div>
 </header>
+
+<!-- mobile stats strip: key numbers below header, hidden on desktop -->
+<div class="mobile-stats">
+  
+  <div class="mstat">
+    <span class="mstat-label hr">Temp. mora</span>
+    <span class="mstat-label en">Sea temp</span>
+    <span class="mstat-val">25.9&thinsp;°C</span>
+  </div>
+  <div class="mstat">
+    <span class="mstat-label hr">Val</span>
+    <span class="mstat-label en">Waves</span>
+    <span class="mstat-val">0.2&thinsp;m</span>
+  </div>
+  
+  
+  <div class="mstat">
+    <span class="mstat-label hr">Izlazak ☀️</span>
+    <span class="mstat-label en">Sunrise ☀️</span>
+    <span class="mstat-val">05:15</span>
+  </div>
+  <div class="mstat">
+    <span class="mstat-label hr">Zalazak 🌅</span>
+    <span class="mstat-label en">Sunset 🌅</span>
+    <span class="mstat-val">20:40</span>
+  </div>
+  
+  
+  <div class="mstat-divider"></div>
+  
+  <div class="mstat">
+    <span class="mstat-label hr">Smjer vala</span>
+    <span class="mstat-label en">Wave dir.</span>
+    <span class="mstat-val">SE</span>
+  </div>
+  
+  
+  <div class="mstat">
+    <span class="mstat-label hr">Vjetar</span>
+    <span class="mstat-label en">Wind</span>
+    <span class="mstat-val">5&thinsp;kn W</span>
+  </div>
+  
+  
+</div>
 
 
 
@@ -357,6 +441,66 @@
   <main>
     
 
+    
+    <div class="article">
+      <div class="article-meta">
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
+        
+        <span class="hr">25. 6. 2026.</span>
+        <span class="en">25 Jun 2026</span>
+        
+      </div>
+      <h2><a href="https://www.gradvis.hr/javni-natjecaj-za-dodjelu-dozvola-na-pomorskom-dobru-na-podrucju-grada-visa-3/" target="_blank" rel="noopener">
+        <span class="hr">JAVNI NATJEČAJ ZA DODJELU DOZVOLA NA POMORSKOM DOBRU NA PODRUČJU GRADA VISA</span>
+        <span class="en">2026-06-25T08:26:50.755670+00:00</span>
+      </a></h2>
+      
+      <p class="summary hr">Grad Vis raspisal je javni natječaj za dodjelu dozvola na pomorskom dobru. Ko je zainteresiran, neka se javi i provjeri uvjete – radi se o korištenju morske obale na našem otoku.</p>
+      
+      
+      <p class="summary en">Public Tender for Granting Permits on Maritime Property in the City of Vis</p>
+      
+    </div>
+    
+    <div class="article">
+      <div class="article-meta">
+        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
+        
+        <span class="hr">24. 6. 2026.</span>
+        <span class="en">24 Jun 2026</span>
+        
+      </div>
+      <h2><a href="https://islandvis.blogspot.com/2026/06/hggv-tourdion.html" target="_blank" rel="noopener">
+        <span class="hr">HGGV: Tourdion</span>
+        <span class="en">2026-06-25T08:26:50.755670+00:00</span>
+      </a></h2>
+      
+      <p class="summary hr">Hvarska glazbena grupa HGGV izvodi Tourdion, staru renesansnu skladbu koja lijepo pristaje viškom kulturnom ozračju. Lipo je vidit da se na otoku čuva i takva muzika.</p>
+      
+      
+      <p class="summary en">HGGV: Tourdion</p>
+      
+    </div>
+    
+    <div class="article">
+      <div class="article-meta">
+        <span class="source-badge badge-gradvis">gradvis.hr</span>
+        
+        <span class="hr">23. 6. 2026.</span>
+        <span class="en">23 Jun 2026</span>
+        
+      </div>
+      <h2><a href="https://www.gradvis.hr/obavijest-o-zabrani-odalganja-otpada-na-odlagalistu-wellington/" target="_blank" rel="noopener">
+        <span class="hr">OBAVIJEST O ZABRANI SAMOSTALNOG ODALGANJA  OTPADA NA ODLAGALIŠTU WELLINGTON</span>
+        <span class="en">2026-06-25T08:26:50.755670+00:00</span>
+      </a></h2>
+      
+      <p class="summary hr">Grad Vis obavještava mištane da je zabranjeno samostalno odlaganje otpada na odlagalištu Wellington. Molimo sve da se pridržavaju pravila – radi čistoće našeg otoka i svih nas.</p>
+      
+      
+      <p class="summary en">Notice on the Ban of Independent Waste Disposal at the Wellington Landfill</p>
+      
+    </div>
     
     <div class="article">
       <div class="article-meta">
@@ -798,66 +942,6 @@
       
     </div>
     
-    <div class="article">
-      <div class="article-meta">
-        <span class="source-badge badge-gradvis">gradvis.hr</span>
-        
-        <span class="hr">3. 6. 2026.</span>
-        <span class="en">3 Jun 2026</span>
-        
-      </div>
-      <h2><a href="https://www.gradvis.hr/javni-natjecaj-za-prijam-u-sluzbu-u-grad-vis-jedinstveni-upravni-odjel-na-radno-mjesto-voditelj-odsjeka-za-proracun-i-racunovodstveno-financijske-poslove-1-izvrsitelj-ica-na-neodredeno-v/" target="_blank" rel="noopener">
-        <span class="hr">JAVNI NATJEČAJ za prijam u službu u Grad Vis — Jedinstveni upravni odjel na radno mjesto: Voditelj odsjeka za proračun i računovodstveno-financijske poslove (1 izvršitelj/ica), na neodređeno vrijeme, uz probni rad od tri mjeseca</span>
-        <span class="en">PUBLIC COMPETITION for employment in the City of Vis — Unified Administrative Department, position: Head of the Budget and Accounting-Finance Section (1 employee), permanent contract with a three-month probationary period</span>
-      </a></h2>
-      
-      <p class="summary hr">Grad Vis raspisao je javni natječaj za zapošljavanje voditelja odsjeka za proračun i računovodstveno-financijske poslove u Jedinstvenom upravnom odjelu. Traži se jedan izvršitelj ili izvršiteljica, na neodređeno vrime s probnim radom od tri miseca. Ko ima znanja iz financija i želi radit za dobro Visa, neka se prijavi!</p>
-      
-      
-      <p class="summary en">The City of Vis has announced a public competition for the position of Head of the Budget and Accounting-Finance Section in the Unified Administrative Department. One employee is sought on a permanent contract with a three-month probationary period. Those with a background in finance who wish to work for the benefit of Vis are encouraged to apply.</p>
-      
-    </div>
-    
-    <div class="article">
-      <div class="article-meta">
-        <span class="source-badge badge-gradvis">gradvis.hr</span>
-        
-        <span class="hr">2. 6. 2026.</span>
-        <span class="en">2 Jun 2026</span>
-        
-      </div>
-      <h2><a href="https://www.gradvis.hr/izmjena-i-dopuna-dnevnog-reda-i-nadopuna-materijala-za-9-sjednicu-gradskog-vijeca-grada-visa/" target="_blank" rel="noopener">
-        <span class="hr">Izmjena i dopuna Dnevnog reda i nadopuna materijala za 9. sjednicu Gradskog vijeća Grada Visa</span>
-        <span class="en">Amendment and supplementation of the Agenda and additional materials for the 9th session of the City Council of the City of Vis</span>
-      </a></h2>
-      
-      <p class="summary hr">Gradsko vijeće Grada Visa izmijenilo je i dopunilo dnevni red za 9. sjednicu, pa su vijećnici dobili i dodatne materijale za raspravu. Izmjene su uobičajena stvar kad se pojave nova pitanja koja triba riješit na vrime. Vijećnici, neka se dobro pripremu jer posla ima!</p>
-      
-      
-      <p class="summary en">The City Council of the City of Vis has amended and supplemented the agenda for the 9th session, providing council members with additional materials for discussion. Amendments are a routine matter when new issues arise that need to be resolved in a timely manner. Council members are advised to prepare well, as there is much work to be done.</p>
-      
-    </div>
-    
-    <div class="article">
-      <div class="article-meta">
-        <span class="source-badge badge-islandvis">islandvis.blogspot.com</span>
-        
-        <span class="hr">2. 6. 2026.</span>
-        <span class="en">2 Jun 2026</span>
-        
-      </div>
-      <h2><a href="https://islandvis.blogspot.com/2026/06/vrhovi-dubina-podvodna-bastina-sdz-issa.html" target="_blank" rel="noopener">
-        <span class="hr">Vrhovi dubina – podvodna baština SDŽ (Issa)</span>
-        <span class="en">Peaks of the Depths – Underwater Heritage of Split-Dalmatia County (Issa)</span>
-      </a></h2>
-      
-      <p class="summary hr">U zagrebačkom Arheološkom muzeju otvorena je izložba podvodne baštine Splitsko-dalmatinske županije, di su predstavljeni nalazi s više od 40 lokaliteta, pa i oni s viških voda. Boris Čargo održao je predavanje o pomorskoj orijentiranosti antičke Isse, nakon čega se razvila živa rasprava. Lipo je vidit da naša Issa ima svoje misto na državnoj razini.</p>
-      
-      
-      <p class="summary en">An exhibition of the underwater heritage of Split-Dalmatia County was opened at the Archaeological Museum in Zagreb, presenting finds from more than 40 sites, including those from the waters around Vis. Boris Čargo gave a lecture on the maritime orientation of ancient Issa, which sparked a lively discussion. It is good to see that our Issa has its place at the national level.</p>
-      
-    </div>
-    
 
   </main>
 
@@ -865,7 +949,7 @@
   <aside class="sidebar">
 
     <!-- Windy wind map -->
-    <div class="widget">
+    <div class="widget widget-windy">
       <div class="widget-title">
         <span class="hr">🌬 Vjetar &amp; Vrijeme</span>
         <span class="en">🌬 Wind &amp; Weather</span>
@@ -882,7 +966,7 @@
 
     <!-- Sea conditions -->
     
-    <div class="widget">
+    <div class="widget widget-sea">
       <div class="widget-title">
         <span class="hr">🌊 More — trenutno stanje</span>
         <span class="en">🌊 Sea Conditions</span>
@@ -891,12 +975,12 @@
         <div class="stat-row">
           <span class="stat-label hr">Temperatura mora</span>
           <span class="stat-label en">Sea temperature</span>
-          <span class="stat-value">26.1 °C</span>
+          <span class="stat-value">25.9 °C</span>
         </div>
         <div class="stat-row">
           <span class="stat-label hr">Visina vala</span>
           <span class="stat-label en">Wave height</span>
-          <span class="stat-value">0.18 m</span>
+          <span class="stat-value">0.2 m</span>
         </div>
         <div class="stat-row">
           <span class="stat-label hr">Smjer vala</span>
@@ -906,7 +990,7 @@
         <div class="stat-row">
           <span class="stat-label hr">Period vala</span>
           <span class="stat-label en">Wave period</span>
-          <span class="stat-value">3.0 s</span>
+          <span class="stat-value">3.5 s</span>
         </div>
       </div>
     </div>
@@ -914,7 +998,7 @@
 
     <!-- Sun times -->
     
-    <div class="widget">
+    <div class="widget widget-sun">
       <div class="widget-title">
         <span class="hr">☀️ Sunce danas</span>
         <span class="en">☀️ Daylight</span>
@@ -933,14 +1017,14 @@
         <div class="stat-row">
           <span class="stat-label hr">Dan traje</span>
           <span class="stat-label en">Day length</span>
-          <span class="stat-value">15h 25min</span>
+          <span class="stat-value">15h 24min</span>
         </div>
       </div>
     </div>
     
 
     <!-- Windguru forecast -->
-    <div class="widget">
+    <div class="widget widget-windguru">
       <div class="widget-title">📊 Windguru</div>
       <div class="widget-body" style="padding: 0.75rem;">
         <script type="text/javascript">

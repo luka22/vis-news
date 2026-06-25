@@ -66,9 +66,31 @@ def fetch_sun_times() -> dict:
         return {}
 
 
+def fetch_wind() -> dict:
+    """Returns wind_speed_kn and wind_direction compass, or empty dict on error."""
+    try:
+        url = (
+            "https://api.open-meteo.com/v1/forecast"
+            f"?latitude={VIS_LAT}&longitude={VIS_LON}"
+            "&current=wind_speed_10m,wind_direction_10m"
+            "&wind_speed_unit=kn"
+        )
+        r = httpx.get(url, timeout=TIMEOUT)
+        r.raise_for_status()
+        current = r.json()["current"]
+        return {
+            "wind_speed_kn": round(current["wind_speed_10m"]),
+            "wind_direction": _deg_to_compass(current["wind_direction_10m"]),
+        }
+    except Exception as e:
+        print(f"[sidebar] wind error: {e}")
+        return {}
+
+
 def fetch_all() -> dict:
     return {
         "sea": fetch_sea_conditions(),
         "sun": fetch_sun_times(),
+        "wind": fetch_wind(),
         "fetched_at": datetime.now(UTC),
     }

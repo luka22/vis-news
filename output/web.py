@@ -28,7 +28,7 @@ def _write_sitemap(generated_at: datetime) -> None:
   <url>
     <loc>{SITE_URL}/</loc>
     <lastmod>{generated_at.strftime('%Y-%m-%d')}</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 </urlset>"""

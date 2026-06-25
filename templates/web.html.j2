@@ -283,6 +283,11 @@
       font-weight: 700;
       color: #fff;
     }
+    .mstat-divider {
+      width: 100%;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      margin: 0.1rem 0;
+    }
 
     /* ── responsive ── */
     @media (max-width: 760px) {
@@ -329,8 +334,8 @@
         <span class="en">Vis Island News</span>
       </h1>
       <p>
-        <span class="hr">{{ article_count }} vijesti &mdash; {{ generated_at.strftime('%d. %m. %Y.') }}</span>
-        <span class="en">{{ article_count }} stories &mdash; {{ generated_at.strftime('%d %B %Y') }}</span>
+        <span class="hr">{{ article_count }} vijesti &mdash; ažurirano {{ generated_at.strftime('%d. %m. %Y.') }}</span>
+        <span class="en">{{ article_count }} stories &mdash; updated {{ generated_at.strftime('%d %B %Y') }}</span>
       </p>
     </div>
     <img class="grb"
@@ -364,6 +369,23 @@
     <span class="mstat-label en">Sunset 🌅</span>
     <span class="mstat-val">{{ sidebar.sun.sunset }}</span>
   </div>
+  {% endif %}
+  {% if sidebar.sea or sidebar.wind %}
+  <div class="mstat-divider"></div>
+  {% if sidebar.sea and sidebar.sea.wave_direction %}
+  <div class="mstat">
+    <span class="mstat-label hr">Smjer vala</span>
+    <span class="mstat-label en">Wave dir.</span>
+    <span class="mstat-val">{{ sidebar.sea.wave_direction }}</span>
+  </div>
+  {% endif %}
+  {% if sidebar.wind %}
+  <div class="mstat">
+    <span class="mstat-label hr">Vjetar</span>
+    <span class="mstat-label en">Wind</span>
+    <span class="mstat-val">{{ sidebar.wind.wind_speed_kn }}&thinsp;kn {{ sidebar.wind.wind_direction }}</span>
+  </div>
+  {% endif %}
   {% endif %}
 </div>
 
