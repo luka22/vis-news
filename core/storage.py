@@ -50,7 +50,7 @@ def get_conn() -> sqlite3.Connection:
     return conn
 
 
-def get_recent(days: int = 8) -> list[Article]:
+def get_recent(days: int = 3) -> list[Article]:
     """Return articles fetched within the last N days, sorted by published date desc."""
     from datetime import timedelta
     cutoff = (datetime.now(UTC) - timedelta(days=days)).isoformat()
