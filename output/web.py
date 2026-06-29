@@ -59,7 +59,7 @@ def render(articles: list[Article], generated_at: datetime | None = None) -> Pat
     env.filters["reldate_en"] = lambda dt: _fmt_date(dt, "en")
     tmpl = env.get_template("web.html.j2")
     sidebar = fetch_sidebar()
-    local     = [a for a in articles if a.source in LOCAL_SOURCES][:25]
+    local     = articles[:50]
     # one article per regional source, most recently fetched first
     seen_sources: set[str] = set()
     regional = []
