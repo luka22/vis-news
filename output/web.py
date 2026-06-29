@@ -19,6 +19,11 @@ REGIONAL_SOURCES = {
     "slobodnadalmacija.hr",
     "nacional.hr",
     "index.hr",
+    "morski.hr",
+    "tportal.hr",
+    "jutarnji.hr",
+    "hrt.hr",
+    "n1info.hr",
 }
 
 
@@ -62,7 +67,7 @@ def render(articles: list[Article], generated_at: datetime | None = None) -> Pat
         if a.source in REGIONAL_SOURCES and a.source not in seen_sources:
             regional.append(a)
             seen_sources.add(a.source)
-    regional = regional[:3]
+    regional = regional[:8]
     html = tmpl.render(
         articles=local,
         featured=regional,

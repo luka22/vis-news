@@ -16,6 +16,11 @@ from scrapers.slobodnadalmacija import SlobodnaDalmacijaScraper
 from scrapers.vis_tourism import VisTourismScraper
 from scrapers.tz_komiza import TzKomizaScraper
 from scrapers.dalmacijadanas import DalmacijaDanasScraper
+from scrapers.morski import MorskiScraper
+from scrapers.tportal import TportalScraper
+from scrapers.jutarnji import JutarnjiScraper
+from scrapers.hrt import HrtScraper
+from scrapers.n1 import N1Scraper
 from core.storage import filter_new, mark_seen, get_recent
 from core.dedup import dedup_cross_source
 from core.summarize import summarize_articles
@@ -30,6 +35,11 @@ SCRAPERS = [
     VisTourismScraper(),
     TzKomizaScraper(),
     DalmacijaDanasScraper(),
+    MorskiScraper(),
+    TportalScraper(),
+    JutarnjiScraper(),
+    HrtScraper(),
+    N1Scraper(),
 ]
 
 
@@ -73,7 +83,7 @@ def main() -> None:
     mark_seen(new_articles)
 
     # 7. render all articles from the last 8 days (not just this run's batch)
-    out = render(get_recent(days=8))
+    out = render(get_recent(days=3))
     print(f"[vis-news] done → {out}")
 
 

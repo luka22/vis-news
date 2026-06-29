@@ -36,7 +36,7 @@ Articles:
 _BATCH_SIZE = 15
 
 
-def _summarize_batch(batch: list[Article]) -> dict[str, dict]:
+def _summarize_batch(batch: list[Article], attempt: int = 1) -> dict[str, dict]:
     payload = [
         {
             "url_hash": a.url_hash,
@@ -65,14 +65,21 @@ def _summarize_batch(batch: list[Article]) -> dict[str, dict]:
     if raw.startswith("```"):
         raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
 
-    return {
-        item["url_hash"]: {
-            "title_en":   item.get("title_en", ""),
-            "summary_hr": item.get("summary_hr", ""),
-            "summary_en": item.get("summary_en", ""),
+    try:
+        return {
+            item["url_hash"]: {
+                "title_en":   item.get("title_en", ""),
+                "summary_hr": item.get("summary_hr", ""),
+                "summary_en": item.get("summary_en", ""),
+            }
+            for item in json.loads(raw)
         }
-        for item in json.loads(raw)
-    }
+    except (json.JSONDecodeError, KeyError) as e:
+        if attempt < 3:
+            print(f"[summarize] JSON parse error (attempt {attempt}), retrying: {e}")
+            return _summarize_batch(batch, attempt + 1)
+        print(f"[summarize] batch failed after 3 attempts, skipping: {e}")
+        return {}
 
 
 def summarize_articles(articles: list[Article]) -> list[Article]:

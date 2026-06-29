@@ -5,17 +5,17 @@ from core.storage import Article
 from core.vis_filter import mentions_vis
 from .base import BaseScraper
 
-RSS_URL = "https://www.index.hr/rss"
+RSS_URL = "https://n1info.hr/feed/"
 
 
-class IndexHrScraper(BaseScraper):
-    source = "index.hr"
+class N1Scraper(BaseScraper):
+    source = "n1info.hr"
 
     def fetch(self) -> list[Article]:
         try:
             feed = feedparser.parse(RSS_URL)
         except Exception as e:
-            print(f"[index.hr] fetch error: {e}")
+            print(f"[n1info.hr] fetch error: {e}")
             return []
 
         articles = []
