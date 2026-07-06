@@ -10,7 +10,6 @@ load_dotenv()
 
 from scrapers.gradvis import GradVisScraper
 from scrapers.islandvis import IslandVisScraper
-from scrapers.nacional import NacionalScraper
 from scrapers.index_hr import IndexHrScraper
 from scrapers.slobodnadalmacija import SlobodnaDalmacijaScraper
 from scrapers.vis_tourism import VisTourismScraper
@@ -29,7 +28,6 @@ from output.web import render
 SCRAPERS = [
     GradVisScraper(),
     IslandVisScraper(),
-    NacionalScraper(),
     IndexHrScraper(),
     SlobodnaDalmacijaScraper(),
     VisTourismScraper(),

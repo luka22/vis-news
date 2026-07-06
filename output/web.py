@@ -17,7 +17,6 @@ LOCAL_SOURCES = {
 }
 REGIONAL_SOURCES = {
     "slobodnadalmacija.hr",
-    "nacional.hr",
     "index.hr",
     "morski.hr",
     "tportal.hr",

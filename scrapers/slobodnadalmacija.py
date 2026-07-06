@@ -4,9 +4,7 @@ from .base import BaseScraper, get
 
 BASE_URL = "https://slobodnadalmacija.hr"
 TAG_URLS = [
-    f"{BASE_URL}/tag/otok-vis",
     f"{BASE_URL}/tag/vis",
-    f"{BASE_URL}/tag/komiza",
 ]
 
 
