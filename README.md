@@ -1,5 +1,7 @@
 # Viške novosti / Vis Island News
 
+Live at [issa.news](https://issa.news).
+
 Automated weekly news aggregator for [Vis](https://en.wikipedia.org/wiki/Vis), a Croatian island in the Adriatic. Scrapes 7 local and regional sources, summarises articles in both Croatian (Split dialect) and English using Claude AI, and publishes a static website every Monday.
 
 ---
