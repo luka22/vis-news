@@ -150,6 +150,30 @@ responses). Do not defensively check internal data you control.
 
 ---
 
+## Editing GitHub Actions workflows
+
+Workflow files under `.github/workflows/` are linted by [zizmor](https://zizmor.sh)
+on every push and PR (see `.github/workflows/zizmor.yml`). Catch issues
+before pushing by installing [pre-commit](https://pre-commit.com/) once:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+It then runs zizmor automatically on any commit touching a workflow
+file. Run it manually with:
+
+```bash
+pre-commit run zizmor --all-files
+```
+
+Pin third-party actions to a full commit SHA, not a tag or branch, and
+add the version as a trailing comment (`uses: actions/checkout@<sha> #
+v4.x.x`).
+
+---
+
 ## Adding a new scraper
 
 1. Create `scrapers/yoursite.py` inheriting from `BaseScraper`
