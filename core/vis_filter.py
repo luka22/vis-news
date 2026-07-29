@@ -3,7 +3,7 @@ import re
 _VIS_PATTERNS = [
     r"\botok\s+vis\b",
     r"\botoka\s+visa\b",
-    r"\bvis(kom|kog|ku|ka|ke|kim|u)\b",  # all declined forms incl. Visu (locative)
+    r"\bvis(a|om|kom|kog|ku|ka|ke|kim|u)\b",  # all declined forms: Visa (genitive), Visom (instrumental), Visu (locative), etc.
     r"\bgrad\s+vis\b",
     r"\bvišan[ai]?\b",                   # Višani (inhabitants)
     r"\bviska\b",
