@@ -50,6 +50,7 @@ jobs:
 
       - name: Backfill missing English titles
         if: ${{ !inputs.skip_scrape }}
+        continue-on-error: true
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python scripts/backfill_titles.py
