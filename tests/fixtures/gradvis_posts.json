@@ -1,0 +1,16 @@
+[
+  {
+    "id": 101,
+    "title": {"rendered": "Otok Vis dobio novi vodovod"},
+    "link": "https://www.gradvis.hr/vijesti/otok-vis-dobio-novi-vodovod",
+    "date": "2026-08-01T09:00:00",
+    "excerpt": {"rendered": "<p>Grad Vis objavio je da je završena izgradnja novog vodovoda.</p>\n"}
+  },
+  {
+    "id": 102,
+    "title": {"rendered": "Najava ljetnog programa u gradu Visu"},
+    "link": "https://www.gradvis.hr/vijesti/najava-ljetnog-programa",
+    "date": "2026-07-28T14:30:00",
+    "excerpt": {"rendered": "<p>Grad Vis najavljuje bogat ljetni program događanja.</p>\n"}
+  }
+]

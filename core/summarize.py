@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 import anthropic
 from .storage import Article
 
@@ -47,19 +48,23 @@ def _summarize_batch(batch: list[Article], attempt: int = 1) -> dict[str, dict]:
         for a in batch
     ]
 
-    message = _get_client().messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=4096,
-        system=_SYSTEM,
-        messages=[
-            {
-                "role": "user",
-                "content": _USER_TEMPLATE.format(
-                    articles_json=json.dumps(payload, ensure_ascii=False, indent=2)
-                ),
-            }
-        ],
-    )
+    try:
+        message = _get_client().messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=4096,
+            system=_SYSTEM,
+            messages=[
+                {
+                    "role": "user",
+                    "content": _USER_TEMPLATE.format(
+                        articles_json=json.dumps(payload, ensure_ascii=False, indent=2)
+                    ),
+                }
+            ],
+        )
+    except anthropic.APIError as e:
+        print(f"[summarize] API error, skipping batch: {e}", file=sys.stderr)
+        return {}
 
     raw = message.content[0].text.strip()
     if raw.startswith("```"):
@@ -83,6 +88,11 @@ def _summarize_batch(batch: list[Article], attempt: int = 1) -> dict[str, dict]:
 
 
 def summarize_articles(articles: list[Article]) -> list[Article]:
+    """Summarize articles, returning only those that got a summary.
+
+    Articles whose batch failed are dropped so the caller doesn't mark them
+    seen with empty summaries — they'll be retried on the next run.
+    """
     if not articles:
         return articles
 
@@ -92,10 +102,14 @@ def summarize_articles(articles: list[Article]) -> list[Article]:
         print(f"[summarize] batch {i // _BATCH_SIZE + 1}/{-(-len(articles) // _BATCH_SIZE)} ({len(batch)} articles)")
         summaries.update(_summarize_batch(batch))
 
+    summarized = []
     for article in articles:
-        s = summaries.get(article.url_hash, {})
-        article.title_en   = s.get("title_en", "")
-        article.summary_hr = s.get("summary_hr", "")
-        article.summary_en = s.get("summary_en", "")
+        s = summaries.get(article.url_hash)
+        if s is None:
+            continue
+        article.title_en   = s["title_en"]
+        article.summary_hr = s["summary_hr"]
+        article.summary_en = s["summary_en"]
+        summarized.append(article)
 
-    return articles
+    return summarized

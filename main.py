@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """
-vis-news: weekly Croatian island news aggregator
-Run manually or via GitHub Actions cron (Monday 07:00 UTC).
+vis-news: daily Croatian island news aggregator
+Run manually or via GitHub Actions cron (daily 05:00 UTC).
 """
+import argparse
+import os
 import sys
 from datetime import datetime, UTC
 from dotenv import load_dotenv
@@ -41,15 +43,17 @@ SCRAPERS = [
 ]
 
 
-def main() -> None:
+def main(dry_run: bool = False) -> int:
     print(f"[vis-news] starting run at {datetime.now(UTC).isoformat()}")
+    if dry_run:
+        print("[vis-news] DRY RUN — skipping Claude API calls and seen.db writes")
 
     # 1. fetch from all sources
     all_articles = []
     for scraper in SCRAPERS:
         try:
             found = scraper.fetch()
-            status = f"{len(found)} articles" if found else "0 articles (blocked or empty)"
+            status = f"{len(found)} articles" if found else "0 articles"
             print(f"[{scraper.source}] {status}")
             all_articles.extend(found)
         except Exception as e:
@@ -64,7 +68,7 @@ def main() -> None:
     print(f"[dedup] {len(new_articles)} after title fuzzy-dedup")
 
     if not new_articles:
-        print("[vis-news] nothing new this week — rendering empty digest")
+        print("[vis-news] nothing new since last run")
 
     # 4. sort by published date descending
     def _sort_key(a):
@@ -73,17 +77,43 @@ def main() -> None:
 
     new_articles.sort(key=_sort_key, reverse=True)
 
-    # 5. summarize via Claude
-    new_articles = summarize_articles(new_articles)
-    print(f"[summarize] done")
+    # 5. summarize via Claude (skipped in dry runs — stub instead)
+    unsummarized = 0
+    if dry_run:
+        for a in new_articles:
+            a.title_en = a.title
+            a.summary_hr = f"[DRY RUN] {a.title}"
+            a.summary_en = f"[DRY RUN] {a.title}"
+    else:
+        summarized = summarize_articles(new_articles)
+        unsummarized = len(new_articles) - len(summarized)
+        new_articles = summarized
+        print(f"[summarize] done")
+        if unsummarized:
+            print(f"[summarize] {unsummarized} articles failed — not marking seen, will retry next run", file=sys.stderr)
 
-    # 6. mark as seen
-    mark_seen(new_articles)
+    # 6. mark as seen (skipped in dry runs — never write to seen.db)
+    if not dry_run:
+        mark_seen(new_articles)
 
-    # 7. render all articles from the last 8 days (not just this run's batch)
-    out = render(get_recent(days=3))
+    # 7. render all articles from the last 3 days (not just this run's batch).
+    # Dry runs blend in the unwritten new_articles so the preview looks real
+    # without touching seen.db.
+    recent = get_recent(days=3)
+    preview = new_articles + recent if dry_run else recent
+    out = render(preview)
     print(f"[vis-news] done → {out}")
+
+    # Site is rendered either way; still fail the run so summarization errors get noticed.
+    return 1 if unsummarized else 0
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Skip Claude API calls and seen.db writes; render a preview only",
+    )
+    args = parser.parse_args()
+    sys.exit(main(dry_run=args.dry_run or os.environ.get("DRY_RUN") == "1"))

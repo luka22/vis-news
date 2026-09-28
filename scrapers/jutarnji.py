@@ -42,4 +42,5 @@ class JutarnjiScraper(BaseScraper):
                 Article(url=url, title=title, source=self.source, published=published, body=body)
             )
 
+        print(f"[{self.source}] {len(feed.entries)} feed items, {len(articles)} mention Vis")
         return articles
