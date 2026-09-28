@@ -8,13 +8,6 @@ TEMPLATES_DIR = Path(__file__).parent.parent / "templates"
 DOCS_DIR = Path(__file__).parent.parent / "docs"
 SITE_URL = "https://issa.news"
 
-LOCAL_SOURCES = {
-    "gradvis.hr",
-    "vis-tourism.com",
-    "islandvis.blogspot.com",
-    "tz-komiza.hr",
-    "dalmacijadanas.hr",
-}
 REGIONAL_SOURCES = {
     "slobodnadalmacija.hr",
     "index.hr",
