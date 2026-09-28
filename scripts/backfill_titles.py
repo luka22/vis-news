@@ -26,13 +26,19 @@ Keep proper nouns (place names like Vis, Komiža, Split; people's names) unchang
 
 
 def fetch_incomplete() -> list[tuple[str, str, str]]:
-    """Return (url_hash, title, summary_hr) for rows missing title_en or summary_en."""
+    """Return (url_hash, title, summary_hr) for rows missing title_en or summary_en.
+
+    A missing summary_en only counts when there's a summary_hr to translate —
+    otherwise the translation comes back empty and the row would be re-sent to
+    Claude on every run.
+    """
     conn = sqlite3.connect(DB_PATH)
     rows = conn.execute("""
         SELECT url_hash, title, COALESCE(summary_hr, '')
         FROM seen
         WHERE (title_en IS NULL OR title_en = '')
-           OR (summary_en IS NULL OR summary_en = '')
+           OR ((summary_en IS NULL OR summary_en = '')
+               AND COALESCE(summary_hr, '') != '')
     """).fetchall()
     conn.close()
     return rows
