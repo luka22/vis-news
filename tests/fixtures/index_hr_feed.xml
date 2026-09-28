@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Index.hr</title>
+    <item>
+      <title>Otok Vis dobio novi vodovod</title>
+      <link>https://www.index.hr/vijesti/otok-vis-vodovod</link>
+      <description>Grad Vis završio je izgradnju novog vodovoda za mještane.</description>
+      <pubDate>Sat, 01 Aug 2026 09:00:00 +0200</pubDate>
+    </item>
+    <item>
+      <title>Vlada donijela novi proračun</title>
+      <link>https://www.index.hr/vijesti/proracun</link>
+      <description>Vlada je danas usvojila proračun za idući fiskalnu godinu.</description>
+      <pubDate>Sat, 01 Aug 2026 08:00:00 +0200</pubDate>
+    </item>
+    <item>
+      <title>Nogometna reprezentacija pobijedila</title>
+      <link>https://www.index.hr/sport/reprezentacija</link>
+      <description>Hrvatska reprezentacija pobijedila je s dva gola razlike.</description>
+      <pubDate>Sat, 01 Aug 2026 07:00:00 +0200</pubDate>
+    </item>
+  </channel>
+</rss>
