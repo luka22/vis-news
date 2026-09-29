@@ -15,14 +15,20 @@ HEADERS = {
     "Upgrade-Insecure-Requests": "1",
 }
 TIMEOUT = 30
+SCRAPERAPI_URL = "https://api.scraperapi.com/"
 
 
 def get(url: str, use_proxy: bool = False) -> httpx.Response:
     """Fetch a URL, optionally routing through ScraperAPI for Cloudflare-blocked sites."""
     scraper_key = os.environ.get("SCRAPERAPI_KEY")
     if use_proxy and scraper_key:
-        proxy_url = f"http://api.scraperapi.com?api_key={scraper_key}&url={url}"
-        return httpx.get(proxy_url, timeout=TIMEOUT, follow_redirects=True)
+        # HTTPS so the key isn't sent in cleartext; params= URL-encodes the target.
+        return httpx.get(
+            SCRAPERAPI_URL,
+            params={"api_key": scraper_key, "url": url},
+            timeout=TIMEOUT,
+            follow_redirects=True,
+        )
     return httpx.get(url, headers=HEADERS, timeout=TIMEOUT, follow_redirects=True)
 
 
