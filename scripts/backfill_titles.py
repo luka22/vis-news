@@ -5,7 +5,6 @@ title_en or summary_en — runs before main.py on every deploy.
 On subsequent runs with nothing to backfill, exits immediately.
 """
 import json
-import os
 import sqlite3
 import sys
 from pathlib import Path
@@ -15,14 +14,31 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from dotenv import load_dotenv
 load_dotenv()
 
-import anthropic
+from core.summarize import create_message, reply_text
 
 DB_PATH = Path(__file__).parent.parent / "data" / "seen.db"
 BATCH_SIZE = 20
-client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
 _SYSTEM = """You are a translator. For each article, return English translations.
 Keep proper nouns (place names like Vis, Komiža, Split; people's names) unchanged."""
+
+_FIELDS = ["url_hash", "title_en", "summary_en"]
+_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "articles": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {f: {"type": "string"} for f in _FIELDS},
+                "required": _FIELDS,
+                "additionalProperties": False,
+            },
+        }
+    },
+    "required": ["articles"],
+    "additionalProperties": False,
+}
 
 
 def fetch_incomplete() -> list[tuple[str, str, str]]:
@@ -49,33 +65,26 @@ def translate_batch(batch: list[tuple[str, str, str]]) -> dict[str, dict]:
         {"url_hash": h, "title": t, "summary_hr": s}
         for h, t, s in batch
     ]
-    msg = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=4096,
+    msg = create_message(
         system=_SYSTEM,
-        messages=[{
-            "role": "user",
-            "content": (
-                "Translate each article's title and summary to English.\n"
-                "Return a JSON array where each element has:\n"
-                '- "url_hash": string (copy from input)\n'
-                '- "title_en": string (English title)\n'
-                '- "summary_en": string (English summary, 2-3 sentences; '
-                'empty string if summary_hr is empty)\n\n'
-                "Articles:\n" +
-                json.dumps(payload, ensure_ascii=False, indent=2)
-            )
-        }]
+        content=(
+            "Translate each article's title and summary to English.\n"
+            'Return one entry in "articles" per input article, each with:\n'
+            '- "url_hash": string (copy from input)\n'
+            '- "title_en": string (English title)\n'
+            '- "summary_en": string (English summary, 2-3 sentences; '
+            'empty string if summary_hr is empty)\n\n'
+            "Articles:\n" +
+            json.dumps(payload, ensure_ascii=False, indent=2)
+        ),
+        schema=_SCHEMA,
     )
-    raw = msg.content[0].text.strip()
-    if raw.startswith("```"):
-        raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
     return {
         item["url_hash"]: {
             "title_en":   item.get("title_en", ""),
             "summary_en": item.get("summary_en", ""),
         }
-        for item in json.loads(raw)
+        for item in json.loads(reply_text(msg))["articles"]
     }
 
 

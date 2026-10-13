@@ -53,7 +53,7 @@ Automated daily news aggregator for [Vis](https://en.wikipedia.org/wiki/Vis), a 
 │                                 │                                                 │
 │                                 ▼                                                 │
 │                    ┌────────────────────────┐                                     │
-│                    │       SUMMARISE        │  claude-sonnet-4-6                  │
+│                    │       SUMMARISE        │  claude-opus-5                      │
 │                    │  Croatian Split dialect│                                     │
 │                    │  + English             │                                     │
 │                    └────────────┬───────────┘                                     │
@@ -212,7 +212,7 @@ vis-news/
 
 | Service | Cost |
 |---|---|
-| Anthropic API (`claude-sonnet-4-6`) | Small per-article cost, batched; runs daily |
+| Anthropic API (`claude-opus-5`) | Small per-article cost, batched; runs daily |
 | ScraperAPI | Free (1,000 req/month, ~4 used) |
 | GitHub Actions | Free |
 | GitHub Pages | Free |

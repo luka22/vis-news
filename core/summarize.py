@@ -4,6 +4,8 @@ import sys
 import anthropic
 from .storage import Article
 
+MODEL = "claude-opus-5"
+
 _client: anthropic.Anthropic | None = None
 
 
@@ -25,7 +27,7 @@ _SYSTEM = """Ti si urednik lokalnih viških novina. Za svaki članak pišeš dva
    covering news from Vis island, Croatia. Keep it informative and concise."""
 
 _USER_TEMPLATE = """Write a short summary (2-3 sentences) for each of the following articles from Vis island.
-Return a JSON array where each element has:
+Return one entry in "articles" per input article, each with:
 - "url_hash": string (copy from input)
 - "title_en": string (English translation of the original title)
 - "summary_hr": string (summary in Split/Dalmatian dialect Croatian)
@@ -35,6 +37,50 @@ Articles:
 {articles_json}"""
 
 _BATCH_SIZE = 15
+
+# Structured outputs: the API guarantees the reply is JSON matching this schema,
+# so a chatty preamble ("Here are the summaries:") can no longer break parsing.
+_ARTICLE_FIELDS = ["url_hash", "title_en", "summary_hr", "summary_en"]
+_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "articles": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {f: {"type": "string"} for f in _ARTICLE_FIELDS},
+                "required": _ARTICLE_FIELDS,
+                "additionalProperties": False,
+            },
+        }
+    },
+    "required": ["articles"],
+    "additionalProperties": False,
+}
+
+
+def create_message(*, system: str, content: str, schema: dict, max_tokens: int = 16000):
+    """Single place every Claude call in the pipeline goes through.
+
+    - output_config.format: the reply is guaranteed to be JSON matching `schema`
+    - effort "low": summarizing/translating is routine work; keeps thinking tokens down
+    - fallbacks "default": if Opus 5's safety classifiers decline, the API re-runs
+      the request on a fallback model server-side instead of returning a refusal
+    """
+    return _get_client().beta.messages.create(
+        model=MODEL,
+        max_tokens=max_tokens,
+        system=system,
+        betas=["server-side-fallback-2026-07-01"],
+        fallbacks="default",
+        output_config={"effort": "low", "format": {"type": "json_schema", "schema": schema}},
+        messages=[{"role": "user", "content": content}],
+    )
+
+
+def reply_text(message) -> str:
+    # Last text block: after a fallback, the model that finished writes the final one.
+    return next((b.text for b in reversed(message.content) if b.type == "text"), "")
 
 
 def _summarize_batch(batch: list[Article], attempt: int = 1) -> dict[str, dict]:
@@ -49,26 +95,18 @@ def _summarize_batch(batch: list[Article], attempt: int = 1) -> dict[str, dict]:
     ]
 
     try:
-        message = _get_client().messages.create(
-            model="claude-sonnet-4-6",
-            max_tokens=4096,
+        message = create_message(
             system=_SYSTEM,
-            messages=[
-                {
-                    "role": "user",
-                    "content": _USER_TEMPLATE.format(
-                        articles_json=json.dumps(payload, ensure_ascii=False, indent=2)
-                    ),
-                }
-            ],
+            content=_USER_TEMPLATE.format(
+                articles_json=json.dumps(payload, ensure_ascii=False, indent=2)
+            ),
+            schema=_SCHEMA,
         )
     except anthropic.APIError as e:
         print(f"[summarize] API error, skipping batch: {e}", file=sys.stderr)
         return {}
 
-    raw = message.content[0].text.strip()
-    if raw.startswith("```"):
-        raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+    raw = reply_text(message)
 
     try:
         return {
@@ -77,13 +115,15 @@ def _summarize_batch(batch: list[Article], attempt: int = 1) -> dict[str, dict]:
                 "summary_hr": item.get("summary_hr", ""),
                 "summary_en": item.get("summary_en", ""),
             }
-            for item in json.loads(raw)
+            for item in json.loads(raw)["articles"]
         }
-    except (json.JSONDecodeError, KeyError) as e:
+    except (json.JSONDecodeError, KeyError, TypeError) as e:
+        # Log enough to diagnose: a max_tokens/refusal stop truncates the JSON.
+        detail = f"{e} (stop_reason={message.stop_reason}, reply starts {raw[:200]!r})"
         if attempt < 3:
-            print(f"[summarize] JSON parse error (attempt {attempt}), retrying: {e}")
+            print(f"[summarize] JSON parse error (attempt {attempt}), retrying: {detail}")
             return _summarize_batch(batch, attempt + 1)
-        print(f"[summarize] batch failed after 3 attempts, skipping: {e}")
+        print(f"[summarize] batch failed after 3 attempts, skipping: {detail}")
         return {}
 
 

@@ -57,7 +57,7 @@ uploads the rendered `docs/index.html` as a build artifact for review.
 2. **URL dedup** — `core/storage.filter_new` drops URLs already in `seen.db`
 3. **Fuzzy dedup** — `core/dedup.dedup_cross_source` removes near-duplicate titles across sources (SequenceMatcher ≥ 0.75)
 4. **Sort** — by `published` date descending
-5. **Summarize** — `core/summarize.summarize_articles` calls `claude-sonnet-4-6` in batches of 15 (skipped in `--dry-run`). Batches that fail (API error or unparseable JSON) are dropped, so those articles aren't marked seen and get retried next run; `main.py` still renders and deploys, then exits 1
+5. **Summarize** — `core/summarize.summarize_articles` calls Claude in batches of 15 (skipped in `--dry-run`). Batches that fail (API error or unparseable reply) are dropped, so those articles aren't marked seen and get retried next run; `main.py` still renders and deploys, then exits 1
 6. **Mark seen** — writes new articles to `seen.db` (skipped in `--dry-run`)
 7. **Render** — `output/web.render` reads the last 3 days from `seen.db` (not just this run's batch) and writes `docs/index.html` + `docs/sitemap.xml`
 
@@ -81,7 +81,13 @@ All scrapers inherit `BaseScraper` from `scrapers/base.py` and implement `fetch(
 
 ### `core/summarize.py` — batched Claude calls
 
-Sends batches of up to 15 articles to Claude as a JSON array, gets back `{url_hash, title_en, summary_hr, summary_en}` for each. The system prompt specifies ikavica/Split dialect for `summary_hr`. Always use `claude-sonnet-4-6`.
+Sends batches of up to 15 articles to Claude, gets back `{url_hash, title_en, summary_hr, summary_en}` for each. The system prompt specifies ikavica/Split dialect for `summary_hr`.
+
+Every Claude call (including `scripts/backfill_titles.py`) goes through `create_message()`, which sets:
+- `MODEL` (default `claude-opus-5`): change the model in this one place
+- `output_config.format` (JSON schema): the reply is guaranteed to be valid JSON. Don't parse free text
+- `effort: "low"`: summarizing/translating is routine; keeps cost down
+- `fallbacks: "default"` (beta `server-side-fallback-2026-07-01`): a safety-classifier refusal is re-run server-side on a fallback model
 
 ### `output/web.py` — rendering
 
