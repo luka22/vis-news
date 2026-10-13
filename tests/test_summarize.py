@@ -7,7 +7,7 @@ from core.storage import Article
 
 
 def _fake_message(text: str):
-    return SimpleNamespace(content=[SimpleNamespace(text=text)])
+    return SimpleNamespace(content=[SimpleNamespace(type="text", text=text)], stop_reason="end_turn")
 
 
 def _article(url_hash_seed: str):
@@ -19,14 +19,14 @@ def test_summarize_articles_parses_response(monkeypatch):
     url_hash = articles[0].url_hash
 
     fake_client = MagicMock()
-    fake_client.messages.create.return_value = _fake_message(json.dumps([
+    fake_client.beta.messages.create.return_value = _fake_message(json.dumps({"articles": [
         {
             "url_hash": url_hash,
             "title_en": "News A",
             "summary_hr": "Sažetak A",
             "summary_en": "Summary A",
         }
-    ]))
+    ]}))
     monkeypatch.setattr(summarize, "_get_client", lambda: fake_client)
 
     result = summarize.summarize_articles(articles)
@@ -34,18 +34,21 @@ def test_summarize_articles_parses_response(monkeypatch):
     assert result[0].title_en == "News A"
     assert result[0].summary_hr == "Sažetak A"
     assert result[0].summary_en == "Summary A"
-    fake_client.messages.create.assert_called_once()
+    fake_client.beta.messages.create.assert_called_once()
+    # Structured outputs must be requested so the reply is guaranteed JSON.
+    sent = fake_client.beta.messages.create.call_args.kwargs
+    assert sent["output_config"]["format"]["type"] == "json_schema"
 
 
 def test_summarize_batch_retries_on_bad_json_then_succeeds(monkeypatch):
     article = _article("b")
     url_hash = article.url_hash
-    good_response = json.dumps([
+    good_response = json.dumps({"articles": [
         {"url_hash": url_hash, "title_en": "News B", "summary_hr": "S", "summary_en": "S"}
-    ])
+    ]})
 
     fake_client = MagicMock()
-    fake_client.messages.create.side_effect = [
+    fake_client.beta.messages.create.side_effect = [
         _fake_message("not json"),
         _fake_message("still not json"),
         _fake_message(good_response),
@@ -55,20 +58,20 @@ def test_summarize_batch_retries_on_bad_json_then_succeeds(monkeypatch):
     result = summarize._summarize_batch([article])
 
     assert result[url_hash]["title_en"] == "News B"
-    assert fake_client.messages.create.call_count == 3
+    assert fake_client.beta.messages.create.call_count == 3
 
 
 def test_summarize_batch_gives_up_after_three_failures(monkeypatch):
     article = _article("c")
 
     fake_client = MagicMock()
-    fake_client.messages.create.return_value = _fake_message("not json")
+    fake_client.beta.messages.create.return_value = _fake_message("not json")
     monkeypatch.setattr(summarize, "_get_client", lambda: fake_client)
 
     result = summarize._summarize_batch([article])
 
     assert result == {}
-    assert fake_client.messages.create.call_count == 3
+    assert fake_client.beta.messages.create.call_count == 3
 
 
 def test_summarize_articles_drops_articles_when_api_errors(monkeypatch):
@@ -78,7 +81,7 @@ def test_summarize_articles_drops_articles_when_api_errors(monkeypatch):
     articles = [_article("d")]
     request = httpx.Request("POST", "https://api.anthropic.com/v1/messages")
     fake_client = MagicMock()
-    fake_client.messages.create.side_effect = anthropic.APIConnectionError(request=request)
+    fake_client.beta.messages.create.side_effect = anthropic.APIConnectionError(request=request)
     monkeypatch.setattr(summarize, "_get_client", lambda: fake_client)
 
     assert summarize.summarize_articles(articles) == []

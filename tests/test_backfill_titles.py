@@ -7,8 +7,7 @@ from core.storage import Article, mark_seen
 _SCRIPT = Path(__file__).parent.parent / "scripts" / "backfill_titles.py"
 
 
-def _load_backfill(monkeypatch):
-    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")  # client is built at import time
+def _load_backfill():
     spec = importlib.util.spec_from_file_location("backfill_titles", _SCRIPT)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -24,7 +23,7 @@ def _article(slug, title_en="", summary_hr="", summary_en=""):
 def test_fetch_incomplete_skips_rows_with_nothing_to_translate(tmp_path, monkeypatch):
     db = tmp_path / "seen.db"
     monkeypatch.setattr(storage, "DB_PATH", db)
-    backfill = _load_backfill(monkeypatch)
+    backfill = _load_backfill()
     monkeypatch.setattr(backfill, "DB_PATH", db)
 
     complete = _article("complete", title_en="News", summary_hr="Sažetak", summary_en="Summary")
