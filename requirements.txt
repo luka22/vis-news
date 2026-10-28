@@ -1,5 +1,5 @@
 # Direct dependencies
-anthropic==1.13.0
+anthropic==1.17.0
 httpx==0.28.1
 beautifulsoup4==4.15.0
 lxml==6.1.3
